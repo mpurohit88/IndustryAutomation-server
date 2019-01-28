@@ -1,10 +1,11 @@
 
 // This will be in some JSON config we'll say
 var dbOptions = {
-    host:'localhost',
-    user     : 'root',
-    password : '',
-    database : 'work_manamgement'
+    host:'remotemysql.com',
+    user     : 'uqPOgm6gSd',
+    password : '6AKRzqrPSs',
+    database : 'uqPOgm6gSd',
+    port: 3306
 };
 
 
