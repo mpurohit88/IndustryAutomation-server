@@ -1,0 +1,41 @@
+{
+  "name": "foodbox-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpurohit88/foodbox-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mpurohit88/foodbox-server/issues"
+  },
+  "homepage": "https://github.com/mpurohit88/foodbox-server#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.4",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.14",
+    "path": "^0.12.7",
+    "react-big-calendar": "^0.20.2",
+    "validator": "^10.9.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "keymirror": "^0.1.1",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.1"
+  }
+}
