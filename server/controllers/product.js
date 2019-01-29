@@ -2,6 +2,8 @@ const Product = require("../models/product.js")
 
 const add = function(req, res, next){
     let params = {
+					createdBy: req.decoded.id,
+					companyId: req.decoded.companyId,
 					name: req.body.name,
 					description:req.body.description,
 					unit: req.body.unit,

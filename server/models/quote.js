@@ -6,7 +6,7 @@ var Quote = function(params){
    this.mobileNo = params.mobileNo;
    this.isActive = 1;
    this.status = 1;
-   this.createdBy = 'mpurohit88';
+   this.createdBy = params.createdBy,
    this.products = params.products;
 };
 
@@ -62,6 +62,32 @@ Quote.prototype.all = function() {
       const isActive = 1;
 
 			connection.query('select id, party_id, address, phoneNo, mobileNo, status, dateTimeCreated from quote where isActive=?', [isActive], function(error,rows,fields){
+			 
+					if(!error){ 
+						resolve(rows);
+					} else {
+						console.log("Error...", error);
+						reject(error);
+					}
+
+					connection.release();
+					console.log('Process Complete %d',connection.threadId);
+				});
+    });
+  });
+}
+
+
+Quote.prototype.allByUserId = function(userId) {
+  return new Promise(function(resolve, reject) {
+    connection.getConnection(function(error, connection){
+      if (error) {
+        throw error;
+      }
+
+      const isActive = 1;
+
+			connection.query('select id, party_id, address, phoneNo, mobileNo, status, dateTimeCreated from quote where isActive=? and createdBy=?', [isActive, userId], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);

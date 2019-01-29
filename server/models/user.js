@@ -2,14 +2,16 @@ var connection = require("../lib/connection.js");
 var User = function(params){
    this.email = params.email;
    this.password = params.password;
-   this.company_id = params.company_name,
-   this.name = params.name,
-   this.designation = params.designation,
-   this.area = params.area,
-   this.address = params.address,
-   this.mobNo = params.mobNo,
-   this.isActive = params.isActive
-   this.createdBy = 'mpurohit88'
+   this.companyId = params.companyId;
+   this.organizationId = params.organizationId;
+   this.name = params.name;
+   this.designation = params.designation;
+   this.area = params.area;
+   this.address = params.address;
+   this.mobNo = params.mobNo;
+   this.role = params.role;
+   this.isActive = params.isActive;
+   this.createdBy = params.createdBy;
 };
 
 User.prototype.register = function(newUser){
@@ -24,7 +26,7 @@ User.prototype.register = function(newUser){
     //   [that.company_id, that.name, AES_ENCRYPT(that.password, 'secret'), that.designation, that.address, that.area, that.mobNo, that.email, that.isActive, that.createdBy]
     // ]
 
-    connection.query('INSERT INTO user(companyId,name,password,designation,address,area,mobileNo,email,isActive,createdBy) VALUES ("' + that.company_id + '", "' + that.name + '", AES_ENCRYPT("' + that.password + '", "secret"), "' + that.designation + '", "' + that.area + '", "' + that.address + '", "' + that.mobNo + '", "' + that.email + '", "' + that.isActive + '", "' + that.createdBy + '")', function(error,rows,fields){
+    connection.query('INSERT INTO user(companyId,organizationId,name,password,designation,address,area,mobileNo,email,role,isActive,createdBy) VALUES ("' + that.companyId + '", "' + that.organizationId + '", "' + that.name + '", AES_ENCRYPT("' + that.password + '", "secret"), "' + that.designation + '", "' + that.area + '", "' + that.address + '", "' + that.mobNo + '", "' + that.email + '", "' + that.role + '", "' + that.isActive + '", "' + that.createdBy + '")', function(error,rows,fields){
       
         if(!error){ 
           resolve(rows);

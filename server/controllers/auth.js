@@ -14,7 +14,7 @@ const login = function(req, res, next){
             if (user && user.length > 0 && user[0].password.toString('utf8') === params.password) {
               status = 200;
               // Create a token
-              const payload = { user: params.name };
+              const payload = { id: user[0].id, user: params.name, organizationId: user[0].organizationId, companyId: user[0].companyId, role: user[0].role };
               const options = { expiresIn: '2d', issuer: 'https://sargatechnology.com' };
               const secret = process.env.JWT_SECRET || 'secret';
               const token = jwt.sign(payload, secret, options);
@@ -22,6 +22,7 @@ const login = function(req, res, next){
               result.token = token;
               result.status = status;
               result.result = params.name;
+              result.role =  user[0].role;
             } else {
               status = 401;
               result.status = status;

@@ -2,6 +2,8 @@ const Company = require("../models/company.js")
 
 const register = function(req, res, next){
     let params = {
+					organizationId: req.decoded.organizationId,
+					createdBy: req.decoded.id,
 					name: req.body.name,
 					address:req.body.address,
 					city: req.body.city,

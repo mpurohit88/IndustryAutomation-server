@@ -2,6 +2,7 @@ const Customer = require("../models/customer.js")
 
 const add = function(req, res, next){
     let params = {
+					createdBy: req.decoded.id,
 					name: req.body.name,
 					address:req.body.address,
 					contact_person: req.body.contact_person,
@@ -22,7 +23,7 @@ const add = function(req, res, next){
 
 const all = function(req, res, next){
 	try {
-		new Customer({}).all().then(function(customerList) {
+		new Customer({}).allByUserId(req.decoded.id).then(function(customerList) {
 			res.send(customerList);
 		});
  } catch (err) {

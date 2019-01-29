@@ -3,6 +3,7 @@ const Quote = require("../models/quote.js")
 const create = function(req, res, next){
 
     let params = {
+        createdBy: req.decoded.id,
         party_name: req.body.quote.party_name, 
         address: req.body.quote.address,
         phoneNo: req.body.quote.phoneNo,
@@ -26,12 +27,18 @@ const create = function(req, res, next){
 
 const all = function(req, res, next){
 	try {
-		new Quote({}).all().then(function(quoteList) {
-			res.send(quoteList);
-		});
+        if(req.decoded.role === 'admin') {
+					new Quote({}).all().then(function(quoteList) {
+						res.send(quoteList);
+					});
+        } else {
+					new Quote({}).allByUserId(req.decoded.id).then(function(quoteList) {
+						res.send(quoteList);
+					});
+        }
  	} catch (err) {
 	 	console.log("Error: ", err);
- }
+ 	}
 }
 
 module.exports = {create: create, all: all};

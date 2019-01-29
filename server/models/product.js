@@ -1,11 +1,13 @@
 const connection = require("../lib/connection.js");
+
 let Product = function(params){
-    this.name = params.name,
+	this.name = params.name,
+	this.companyId = params.companyId,
     this.description =params.description,
     this.unit = params.unit,
-		this.hsnCode = params.hsnCode,
-		this.createdBy = 'mpurohi88'
-		this.isActive = 1
+	this.hsnCode = params.hsnCode,
+	this.createdBy = params.createdBy,
+	this.isActive = 1
 };
 
 Product.prototype.add = function(){
@@ -17,10 +19,10 @@ Product.prototype.add = function(){
 		}
 
 		let values = [
-			[that.name, that.description, that.unit, that.hsnCode, that.isActive, that.createdBy]
+			[that.name, that.companyId, that.description, that.unit, that.hsnCode, that.isActive, that.createdBy]
 		]
 
-		connection.query("INSERT INTO product(name,description,unit,hsnCode,isActive,createdBy) VALUES ?", [values], function(error,rows,fields){
+		connection.query("INSERT INTO product(name,companyId,description,unit,hsnCode,isActive,createdBy) VALUES ?", [values], function(error,rows,fields){
 				if(!error){ 
 					resolve(rows);
 				} else {
