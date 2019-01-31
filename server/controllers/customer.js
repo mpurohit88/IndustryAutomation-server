@@ -23,9 +23,15 @@ const add = function(req, res, next){
 
 const all = function(req, res, next){
 	try {
-		new Customer({}).allByUserId(req.decoded.id).then(function(customerList) {
-			res.send(customerList);
-		});
+		if(req.decoded.role === 'admin') {
+			new Customer({}).all().then(function(customerList) {
+				res.send(customerList);
+			});
+		} else {
+			new Customer({}).allByUserId(req.decoded.id).then(function(customerList) {
+				res.send(customerList);
+			});
+		}
  } catch (err) {
 	 console.log("Error: ", err);
  }

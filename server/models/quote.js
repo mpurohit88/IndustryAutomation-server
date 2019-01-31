@@ -63,7 +63,7 @@ Quote.prototype.all = function() {
 
       const isActive = 1;
 
-			connection.query('select q.id, party_id, q.address, phoneNo, q.mobileNo, status, q.dateTimeCreated, u.name from quote q inner join user u on u.id = q.createdBy where q.isActive=?', [isActive], function(error,rows,fields){
+			connection.query('select q.id, c.name as companyName, q.address, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name from quote q inner join user u on u.id = q.createdBy inner join customer c on q.party_id = c.id where q.isActive=?', [isActive], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);
@@ -79,7 +79,6 @@ Quote.prototype.all = function() {
   });
 }
 
-
 Quote.prototype.allByUserId = function(userId) {
   return new Promise(function(resolve, reject) {
     connection.getConnection(function(error, connection){
@@ -91,7 +90,7 @@ Quote.prototype.allByUserId = function(userId) {
 
       const isActive = 1;
 
-			connection.query('select id, party_id, address, phoneNo, mobileNo, status, dateTimeCreated, \'self\' from quote where isActive=? and createdBy=?', [isActive, userId], function(error,rows,fields){
+			connection.query('select q.id, c.name as companyName, q.address, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, \'Self\' as name from quote q inner join customer c on q.party_id = c.id where q.isActive=? and q.createdBy=?', [isActive, userId], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);

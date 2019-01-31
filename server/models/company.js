@@ -55,7 +55,7 @@ Company.prototype.all = function(){
 
 			const isActive = 1;
 
-			connection.query('select id, name from company where isActive=?', [isActive], function(error,rows,fields){
+			connection.query('select id, name, address, city, state, country, tele, fax, mobileNo, email, website, gstn, manufacturerOf, dateTimeCreated from company where isActive=?', [isActive], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);

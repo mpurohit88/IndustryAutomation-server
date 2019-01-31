@@ -54,4 +54,31 @@ User.prototype.register = function(newUser){
   });
 };
 
+User.prototype.all = function() {
+  return new Promise(function(resolve, reject) {
+    connection.getConnection(function(error, connection){
+      console.log('Process Started %d All',connection.threadId);
+
+      if (error) {
+        throw error;
+      }
+
+      const isActive = 1;
+
+			connection.query('select u.id, c.name as companyName, u.name, u.userId, u.designation, u.area, u.address, u.mobileNo, u.email, u.dateTimeCreated from user u inner join company c on u.companyId = c.id where u.isActive=?', [isActive], function(error,rows,fields){
+			 
+					if(!error){ 
+						resolve(rows);
+					} else {
+						console.log("Error...", error);
+						reject(error);
+					}
+
+					connection.release();
+					console.log('Process Complete %d',connection.threadId);
+				});
+    });
+  });
+}
+
 module.exports = User;

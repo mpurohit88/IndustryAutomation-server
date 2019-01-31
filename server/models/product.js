@@ -46,7 +46,7 @@ Product.prototype.all = function(){
 
 			const isActive = 1;
 
-			connection.query('select id, name, unit, hsnCode from product where isActive=?', [isActive], function(error,rows,fields){
+			connection.query('select id, name, unit, hsnCode, dateTimeCreated, createdBy from product where isActive=?', [isActive], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);
