@@ -1,7 +1,9 @@
-var connection = require("../lib/connection.js");
+const connection = require("../lib/connection.js");
+const utils = require("../utils");
+
 var User = function(params){
    this.email = params.email;
-   this.password = params.password;
+   this.password = utils.randomString(11);
    this.companyId = params.companyId;
    this.organizationId = params.organizationId;
    this.name = params.name;
@@ -25,11 +27,21 @@ User.prototype.register = function(newUser){
     // let values = [
     //   [that.company_id, that.name, AES_ENCRYPT(that.password, 'secret'), that.designation, that.address, that.area, that.mobNo, that.email, that.isActive, that.createdBy]
     // ]
+    
 
-    connection.query('INSERT INTO user(companyId,organizationId,name,password,designation,address,area,mobileNo,email,role,isActive,createdBy) VALUES ("' + that.companyId + '", "' + that.organizationId + '", "' + that.name + '", AES_ENCRYPT("' + that.password + '", "secret"), "' + that.designation + '", "' + that.area + '", "' + that.address + '", "' + that.mobNo + '", "' + that.email + '", "' + that.role + '", "' + that.isActive + '", "' + that.createdBy + '")', function(error,rows,fields){
-      
+    connection.query('SELECT MAX(id) as id FROM user', function(error,rows,fields){
+      const userId = that.name.slice(0, 4).toLowerCase() + (rows[0].id + 1);
+        
         if(!error){ 
-          resolve(rows);
+          connection.query('INSERT INTO user(companyId,organizationId,name,userId,password,designation,address,area,mobileNo,email,role,isActive,createdBy) VALUES ("' + that.companyId + '", "' + that.organizationId + '", "' + that.name + '", "' + userId + '", AES_ENCRYPT("' + that.password + '", "secret"), "' + that.designation + '", "' + that.area + '", "' + that.address + '", "' + that.mobNo + '", "' + that.email + '", "' + that.role + '", "' + that.isActive + '", "' + that.createdBy + '")', function(error,rows,fields){
+      
+            if(!error){ 
+              resolve({userName: that.name, userId: userId, password: that.password});
+            } else {
+              console.log("Error...", error);
+              reject(error)
+            }
+          });
         } else {
           console.log("Error...", error);
           reject(error)
