@@ -13,6 +13,7 @@ const productRouter = require('./server/routes/product');
 const companyRouter = require('./server/routes/company');
 const quoteRouter = require('./server/routes/quote');
 const customerRouter = require('./server/routes/customer');
+const quoteProductRouter = require('./server/routes/quoteProduct');
 const authRouter = require('./server/routes/auth');
 
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ app.use('/api/product', productRouter);
 app.use('/api/company', companyRouter);
 app.use('/api/quote', quoteRouter);
 app.use('/api/customer', customerRouter);
+app.use('/api/quoteProduct', quoteProductRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/', function (req, res) {
