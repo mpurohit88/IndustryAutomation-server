@@ -16,7 +16,7 @@ Auth.prototype.login = function(newUser){
       [that.name]
     ]
 
-    connection.query('Select AES_DECRYPT(`password`, \'secret\') AS password, id, companyId, organizationId, role from user where userId=?', [values], function(error,rows,fields){
+    connection.query('Select AES_DECRYPT(`password`, \'secret\') AS password, u.id, u.companyId, c.name, u.organizationId, u.role from user u left join company c on u.companyId = c.id where u.userId=?', [values], function(error,rows,fields){
       
         if(!error){ 
           resolve(rows);

@@ -12,8 +12,16 @@ const add = function(req, res, next){
     const newProduct = new Product(params);
 
     try {
-       newProduct.add().then(function(result) {
-				 res.send("Success");
+       	newProduct.add().then(function(result) {
+					if(req.decoded.role === 'admin') {
+						new Product({}).all().then(function(productList) {
+							res.send(productList);
+						});
+					} else {
+						new Product({}).allByCompanyId(req.decoded.companyId).then(function(productList) {
+							res.send(productList);
+						});
+					}
 			 });
     } catch (err) {
 			console.log("Error: ", err);
@@ -22,9 +30,15 @@ const add = function(req, res, next){
 
 const all = function(req, res, next){
 	try {
-		new Product({}).all().then(function(productList) {
-			res.send(productList);
-		});
+		if(req.decoded.role === 'admin') {
+			new Product({}).all().then(function(productList) {
+				res.send(productList);
+			});
+		} else {
+			new Product({}).allByCompanyId(req.decoded.companyId).then(function(productList) {
+				res.send(productList);
+			});
+		}
  } catch (err) {
 	 console.log("Error: ", err);
  }

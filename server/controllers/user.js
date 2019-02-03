@@ -19,7 +19,13 @@ const register = function(req, res, next){
 
     try {
        newUser.register().then(function(result) {
-		   res.send(result);
+		if(req.decoded.role === 'admin') {
+			new User({}).all().then(function(userList) {
+				res.send({credentials: result, userList: userList});
+			});
+		} else {
+			res.send([]);
+		}
 	   });
     } catch (err) {
 			console.log("Error: ", err);
@@ -31,7 +37,7 @@ const all = function(req, res, next){
 	try {
         if(req.decoded.role === 'admin') {
 			new User({}).all().then(function(userList) {
-				res.send(userList);
+				res.send({userList: userList});
 			});
 		} else {
 			res.send([]);

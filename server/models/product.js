@@ -62,4 +62,29 @@ Product.prototype.all = function(){
 	});
 };
 
+Product.prototype.allByCompanyId = function(companyId){
+	return new Promise(function(resolve, reject) {
+		connection.getConnection(function(error, connection){
+			if (error) {
+				throw error;
+			}
+
+			const isActive = 1;
+
+			connection.query('select p.id, p.name, p.unit, p.hsnCode, p.dateTimeCreated, u.name as createdBy from product p inner join user u on p.createdBy = u.id where u.isActive=? and p.companyId=?', [isActive, companyId], function(error,rows,fields){
+			 
+					if(!error){ 
+						resolve(rows);
+					} else {
+						console.log("Error...", error);
+						reject(error);
+					}
+
+					connection.release();
+					console.log('Process Complete %d',connection.threadId);
+				});
+		});
+	});
+};
+
 module.exports = Product;

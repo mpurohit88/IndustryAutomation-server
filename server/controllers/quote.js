@@ -10,18 +10,26 @@ const create = function(req, res, next){
         mobileNo: req.body.quote.mobileNo,
         products: req.body.productList
     };
-            
+
     const newQuote = new Quote(params);
 
     try {
         if(req.body.productList.length <= 0) throw new Error('Product list can not be empty');
 
        newQuote.create().then(function(result) {
-		   res.status(200).send(result);
+        if(req.decoded.role === 'admin') {
+					new Quote({}).all().then(function(quoteList) {
+							res.send(quoteList);
+					});
+				} else {
+					new Quote({}).allByUserId(req.decoded.id).then(function(quoteList) {
+							res.send(quoteList);
+					});
+				}
 	   });
     } catch (err) {
-        console.log("Error: ", err);
-        res.status(500).send(err);
+			console.log("Error: ", err);
+			res.status(500).send(err);
     }
 };
 

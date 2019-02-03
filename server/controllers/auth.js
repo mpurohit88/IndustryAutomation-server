@@ -23,6 +23,7 @@ const login = function(req, res, next){
               result.status = status;
               result.result = params.name;
               result.role =  user[0].role;
+              result.cname = user[0].name;
             } else {
               status = 401;
               result.status = status;

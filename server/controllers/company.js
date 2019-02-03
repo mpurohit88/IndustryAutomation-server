@@ -22,7 +22,9 @@ const register = function(req, res, next){
 
     try {
 			newCompany.register().then(function() {
-					res.send("success");
+				new Company({}).all().then(function(companyList) {
+					res.send(companyList);
+				});
 			});
     } catch (err) {
 			console.log("Error: ", err);

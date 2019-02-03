@@ -13,8 +13,16 @@ const add = function(req, res, next){
     const newCustomer= new Customer(params);
 
     try {
-        newCustomer.add().then(function(result) {
-				 res.send("Success");
+        newCustomer.add().then(function() {
+					if(req.decoded.role === 'admin') {
+						new Customer({}).all().then(function(customerList) {
+							res.send(customerList);
+						});
+					} else {
+						new Customer({}).allByUserId(req.decoded.id).then(function(customerList) {
+							res.send(customerList);
+						});
+					}
 			 });
     } catch (err) {
 			console.log("Error: ", err);
