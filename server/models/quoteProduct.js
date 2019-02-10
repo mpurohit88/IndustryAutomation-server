@@ -13,7 +13,7 @@ QuoteProduct.prototype.getByQuoteId = function(quoteId) {
         throw error;
 			}
 			
-			connection.query('select qp.product_id, p.name, qp.quantity, qp.gstn from quote_product qp inner join product p on qp.product_id = p.id where qp.quote_id = ?', [quoteId], function(error,rows,fields){
+			connection.query('select qp.product_id, p.name, qp.quantity, qp.gstn, qp.rate, p.hsnCode, p.description from quote_product qp inner join product p on qp.product_id = p.id where qp.quote_id = ?', [quoteId], function(error,rows,fields){
 					
 				if(!error){ 
 						resolve(rows);
