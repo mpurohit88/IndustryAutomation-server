@@ -1,13 +1,16 @@
 const Product = require("../models/product.js")
 
 const add = function(req, res, next){
+	const data = JSON.parse(req.body.data)
+
     let params = {
 					createdBy: req.decoded.id,
 					companyId: req.decoded.companyId,
-					name: req.body.name,
-					description:req.body.description,
-					unit: req.body.unit,
-					hsnCode: req.body.hsnCode
+					name: data.name,
+					description:data.description,
+					unit: data.unit,
+					hsnCode: data.hsnCode,
+					imgName: req.file.filename
 			};
     const newProduct = new Product(params);
 

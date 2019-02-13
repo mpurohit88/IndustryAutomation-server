@@ -24,7 +24,7 @@ Customer.prototype.add = function(){
 
 		connection.query("INSERT INTO customer(name,address,contactPerson,telephone,gstn,email,isActive,createdBy) VALUES ?", [values], function(error,rows,fields){
 				if(!error){ 
-					resolve(rows);
+					resolve({'id': rows.insertId});
 				} else {
 					console.log("Error...", error);
 					reject(error);
