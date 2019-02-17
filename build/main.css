@@ -120,20 +120,33 @@
   width: 106px;
 }
 
-.product {
-  width: 150px;
+#productList > tbody > tr:nth-child(1) {
+  background-color: #bfccd91a;
 }
 
 table thead tr th {
   font-size: 12px;
 }
 
-.productList {
-  font-size: 12px;
-}
-
 .link {
   font-size: 14px;
+}
+
+figure {
+  width: 100px;
+  background-repeat: no-repeat;
+  margin: 0 !important;
+}
+
+figure:hover img {
+  opacity: 0;
+}
+
+img {
+  display: block;
+  height: 80px;
+  width: 100px;
+  pointer-events: none;
 }
 /* PUT SASS VARIABLES HERE */
 
@@ -2459,7 +2472,7 @@ strong {
 
 .step {
   padding: 10px;
-  background-color: #ddf0f4;
+  background-color: #f4f4f487;
   margin-top: 25px;
   border-radius: 12px;
   -moz-border-radius: 12px;
@@ -2473,6 +2486,7 @@ strong {
 }
 
 div.checkmark .circle,
+.circle1,
 .disabled-circle {
   font-size: 16px;
   list-style-type: none;
@@ -2482,23 +2496,11 @@ div.checkmark .circle,
 }
 
 .active-step {
-  border: 2px solid #007bff;
+  border: 1px solid #007bff;
 }
 
-div.checkmark .circle:before {
-  content: " ";
-  display: block;
-  border: solid 0.8em green;
-  border-radius: .8em;
-  height: 0;
-  width: 0;
-  position: absolute;
-  left: 0.5em;
-  top: 40%;
-  margin-top: -0.5em;
-}
-
-div.checkmark .circle:before {
+div.checkmark .circle:before,
+.circle1:before {
   content: " ";
   display: block;
   border: solid 0.8em green;
