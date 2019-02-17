@@ -19,10 +19,10 @@ Customer.prototype.add = function(){
 		}
 
 		let values = [
-			[that.name, that.address, that.contact_person, that.tele, that.gstn, that.email, that.isActive, that.createdBy]
+			[that.name, that.address, that.tele, that.gstn, that.email, that.isActive, that.createdBy]
 		]
 
-		connection.query("INSERT INTO customer(name,address,contactPerson,telephone,gstn,email,isActive,createdBy) VALUES ?", [values], function(error,rows,fields){
+		connection.query("INSERT INTO customer(name,address,telephone,gstn,email,isActive,createdBy) VALUES ?", [values], function(error,rows,fields){
 				if(!error){ 
 					resolve({'id': rows.insertId});
 				} else {
@@ -46,7 +46,7 @@ Customer.prototype.allByUserId = function(userId){
 
 			const isActive = 1;
 
-			connection.query('select id, name, address, contactPerson, telephone, gstn, email, dateTimeCreated from customer where isActive=? and createdBy=?', [isActive, userId], function(error,rows,fields){
+			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated from customer where isActive=? and createdBy=?', [isActive, userId], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);
@@ -71,7 +71,7 @@ Customer.prototype.all = function(){
 
 			const isActive = 1;
 
-			connection.query('select id, name, address, contactPerson, telephone, gstn, email, dateTimeCreated from customer where isActive=?', [isActive], function(error,rows,fields){
+			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated from customer where isActive=?', [isActive], function(error,rows,fields){
 			 
 					if(!error){ 
 						resolve(rows);
