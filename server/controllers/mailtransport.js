@@ -13,6 +13,10 @@ function trans(){
     auth: {
       user: process.env.user,
       pass: process.env.pass
+    },
+    tls:{
+        rejectUnauthorized: false,
+        cipher:'SSLv3'
     }
   })
 
