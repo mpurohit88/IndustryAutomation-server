@@ -5,7 +5,7 @@ const multer=require('multer');
 const storage =   multer.diskStorage({
   destination: function (req, file, callback) {
    
-    callback(null, './img/product/');
+    callback(null, './build/img/product/');
   },
   filename: function (req, file, callback) {
 
