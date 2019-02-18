@@ -6,17 +6,13 @@ function trans(){
   // var transporter = nodemailer.createTransport("SMTP",transport)
   var smtpTransport = nodemailer.createTransport({
     debug: true,
-    port: 25,
+    port: 465, //()
     host: "mail.somiconveyor.com",
-    secure: true, // use SSL
+    // secure: true, // use SSL
     // tls: {cipher:'SSLv3'},
     auth: {
-      user: process.env.user,
-      pass: process.env.pass
-    },
-    tls:{
-        rejectUnauthorized: false,
-        cipher:'SSLv3'
+      user: 'reminder@somiconveyor.com',
+      pass: 'rs@23471'
     }
   })
 
