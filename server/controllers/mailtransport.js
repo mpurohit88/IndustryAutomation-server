@@ -8,11 +8,11 @@ function trans(){
     debug: true,
     port: 465, //()
     host: "mail.somiconveyor.com",
-    // secure: true, // use SSL
+    secure: true, // use SSL
     // tls: {cipher:'SSLv3'},
     auth: {
-      user: 'reminder@somiconveyor.com',
-      pass: 'rs@23471'
+      user: process.env.user,
+      pass: process.env.pass
     }
   })
 
