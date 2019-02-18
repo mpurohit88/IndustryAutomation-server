@@ -1,13 +1,8 @@
 var nodemailer = require('nodemailer');
 // const creds = require('./mail');
-const aws = require('aws-sdk');
-
-let s3 = new aws.S3({
-  user: process.env.user,
-  pass: process.env.pass
-});
 
 function trans(){
+  console.log("*******************UserName: ", process.env.user)
   // var transporter = nodemailer.createTransport("SMTP",transport)
   var smtpTransport = nodemailer.createTransport({
     debug: true,
@@ -16,8 +11,8 @@ function trans(){
     secureConnection: false, // use SSL
     // tls: {cipher:'SSLv3'},
     auth: {
-      user: s3.user,
-      pass: s3.pass
+      user: process.env.user,
+      pass: process.env.pass
     },
     tls: {
         rejectUnauthorized: false
