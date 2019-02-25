@@ -1,21 +1,17 @@
 var nodemailer = require('nodemailer');
 // const creds = require('./mail');
 
-function trans(){
-  console.log("*******************UserName: ", process.env.user)
-  // var transporter = nodemailer.createTransport("SMTP",transport)
-  var smtpTransport = nodemailer.createTransport({
-    debug: true,
-    port: 465, //()
-    host: "mail.somiconveyor.com",
-    secure: true, // use SSL
-    // tls: {cipher:'SSLv3'},
-    auth: {
-      user: process.env.user,
-      pass: process.env.pass
-    }
-  })
 
-  return smtpTransport
+function trans(){
+// var transporter = nodemailer.createTransport("SMTP",transport)
+var smtpTransport = nodemailer.createTransport("smtps://reminder@somiconveyor.com:"+encodeURIComponent('reminder') + "@mail.somiconveyor.com:465");
+smtpTransport.verify((error, success) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Server is ready to take messages'+success);
+  }
+});
+return smtpTransport
 }
 module.exports = trans;

@@ -6,6 +6,7 @@ const validateToken = require('../utils').validateToken;
 const companyRouter = express.Router();
 
 companyRouter.route("/register").post(validateToken, Company.register);
+companyRouter.route("/getById").get(validateToken, Company.getById);
 companyRouter.route("/all").get(validateToken, Company.all);
 
 module.exports = companyRouter;
