@@ -34,11 +34,11 @@ const register = function (req, res, next) {
 const getById = function (req, res, next) {
 	try {
 		if (req.decoded.role === 'admin') {
+			res.send('');
+		} else {
 			new Company({}).getById(req.decoded.companyId).then(function (companyData) {
 				res.send(companyData[0].email);
 			});
-		} else {
-			res.send('');
 		}
 	} catch (err) {
 		console.log("Error: ", err);
