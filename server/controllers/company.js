@@ -33,9 +33,13 @@ const register = function (req, res, next) {
 
 const getById = function (req, res, next) {
 	try {
-		new Company({}).getById(req.decoded.companyId).then(function (companyData) {
-			res.send(companyData[0].email);
-		});
+		if (req.decoded.role === 'admin') {
+			new Company({}).getById(req.decoded.companyId).then(function (companyData) {
+				res.send(companyData[0].email);
+			});
+		} else {
+			res.send('');
+		}
 	} catch (err) {
 		console.log("Error: ", err);
 	}
