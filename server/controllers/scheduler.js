@@ -4,27 +4,44 @@ const ActviityTaskHist = require("../models/activityTaskHist")
 const add = function (req, res, next) {
     const params = {
         createdBy: req.decoded.id,
+        scheduleId: req.body.nextSchedule.scheduleId,
         task_id: req.body.taskId,
+        company_id: req.decoded.companyId,
         subject: 'req.body.subject',
         message_body: '',
         next_reminder_date: req.body.next_reminder_date,
         from_address: req.body.nextSchedule.companyEmailId,
         to_address: req.body.nextSchedule.to,
         frequency: req.body.nextSchedule.schedule_day,
-        time: req.body.nextSchedule.schedule_time,
+        time: req.body.nextSchedule.schedule_time
     };
 
     const newSchedule = new Schedule(params);
 
     try {
-        newSchedule.add().then(function (result) {
-
-            new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
-                res.status(200).send({ tasks: tasks });
+        if (params.scheduleId) {
+            newSchedule.update().then(function (result) {
+                new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                    res.status(200).send({ tasks: tasks });
+                });
             });
+        } else {
+            newSchedule.add().then(function (result) {
+                new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                    res.status(200).send({ tasks: tasks });
+                });
+            });
+        }
+    } catch (err) {
+        console.log("Error: ", err);
+        res.status(500).send(err);
+    }
+}
 
-            // Preview only available when sending through an Ethereal account
-            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+const getScheduleDetails = function (req, res, next) {
+    try {
+        new Schedule({}).getScheduleDetails(req.query.scheduleId).then(function (result) {
+            res.status(200).send({ schedule: result });
         })
     } catch (err) {
         console.log("Error: ", err);
@@ -32,4 +49,4 @@ const add = function (req, res, next) {
     }
 }
 
-module.exports = { add };
+module.exports = { add, getScheduleDetails };

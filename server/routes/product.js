@@ -22,5 +22,6 @@ const productRouter = express.Router();
 
 productRouter.post('/add', validateToken, upload.single('avatar'), Product.add);
 productRouter.route("/all").get(validateToken, Product.all);
+productRouter.route("/detailsByCompanyId").get(validateToken, Product.detailsByCompanyId);
 
 module.exports = productRouter;

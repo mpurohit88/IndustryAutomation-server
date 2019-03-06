@@ -144,8 +144,6 @@ figure:hover img {
 
 img {
   display: block;
-  height: 80px;
-  width: 100px;
   pointer-events: none;
 }
 /* PUT SASS VARIABLES HERE */
@@ -301,14 +299,6 @@ body {
   color: #37302a;
   background: #fff;
   font: normal 100%/1.4 sans-serif;
-}
-
-section {
-  border-bottom: 1px solid #999;
-  text-align: center;
-  padding: 100px 0 0;
-  height: 800px;
-  width: 100%;
 }
 
 h1 {
@@ -1157,6 +1147,42 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+/* PUT SASS VARIABLES HERE */
+
+.quote {
+  width: 100%;
+  text-align: center;
+}
+
+.header {
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+.child > table tr td {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.child > table tr th {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 924px;
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 924px;
+    margin: 1.75rem auto;
+  }
 }
 /* PUT SASS VARIABLES HERE */
 
@@ -2186,15 +2212,27 @@ a:hover {
   box-sizing: content-box;
 }
 
-.rdw-editor-main blockquote {
-  border-left: 5px solid #f1f1f1;
-  padding-left: 5px;
-}
-
 .rdw-editor-main pre {
   background: #f1f1f1;
   border-radius: 3px;
   padding: 1px 10px;
+}
+
+.align-right div {
+  text-align: right;
+}
+
+.align-center div {
+  text-align: center;
+}
+
+.align-left div {
+  text-align: left;
+}
+
+.justified-row {
+  display: flex;
+  justify-content: space-between;
 }
 
 .DraftEditor-editorContainer,
@@ -2273,6 +2311,7 @@ a:hover {
 .public-DraftStyleDefault-ltr {
   direction: ltr;
   text-align: left;
+  color: black !important;
 }
 
 .public-DraftStyleDefault-rtl {
@@ -2409,42 +2448,6 @@ a:hover {
 
 .public-DraftStyleDefault-depth4.public-DraftStyleDefault-reset {
   counter-reset: ol4;
-}
-/* PUT SASS VARIABLES HERE */
-
-.quote {
-  width: 100%;
-  text-align: center;
-}
-
-.header {
-  font-weight: bold;
-  text-decoration: underline;
-  font-size: 20px;
-}
-
-.child > table tr td {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-.child > table tr th {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-@media (min-width: 992px) {
-  .modal-lg,
-  .modal-xl {
-    max-width: 924px;
-  }
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 924px;
-    margin: 1.75rem auto;
-  }
 }
 /* PUT SASS VARIABLES HERE */
 
