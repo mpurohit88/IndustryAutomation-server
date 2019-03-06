@@ -15,6 +15,8 @@ const quoteRouter = require('./server/routes/quote');
 const customerRouter = require('./server/routes/customer');
 const quoteProductRouter = require('./server/routes/quoteProduct');
 const emailRouter = require('./server/routes/email');
+const schedulerRouter = require('./server/routes/scheduler');
+const customerContactRouter = require('./server/routes/customerContact');
 const authRouter = require('./server/routes/auth');
 
 app.use(bodyParser.json());
@@ -26,7 +28,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
@@ -35,6 +37,8 @@ app.use('/api/quote', quoteRouter);
 app.use('/api/customer', customerRouter);
 app.use('/api/quoteProduct', quoteProductRouter);
 app.use('/api/email', emailRouter);
+app.use('/api/scheduler', schedulerRouter);
+app.use('/api/customerContact', customerContactRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/', function (req, res) {
