@@ -15,7 +15,6 @@ const create = function (req, res, next) {
 		products: req.body.productList
 	};
 
-
 	const newQuote = new Quote(params);
 
 	try {
