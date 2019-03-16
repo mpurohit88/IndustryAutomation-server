@@ -6,6 +6,7 @@ const TaskEmail = function (params) {
         this.subject = params.subject,
         this.body = params.body,
         this.createdBy = params.createdBy,
+        this.quoteId = params.quoteId,
         this.isActive = 1
 };
 
@@ -18,10 +19,10 @@ TaskEmail.prototype.add = function () {
             }
 
             let values = [
-                [that.task_id, that.subject, that.body, that.isActive, that.createdBy]
+                [that.task_id, that.subject, that.body, that.quoteId, that.isActive, that.createdBy]
             ]
 
-            connection.query("INSERT INTO task_email(task_id,subject,body,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
+            connection.query("INSERT INTO task_email(task_id,subject,body,quote_id,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
                 if (!error) {
                     resolve(rows);
                 } else {

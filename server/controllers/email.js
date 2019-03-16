@@ -12,7 +12,8 @@ const send = function (req, res, next) {
     createdBy: req.decoded.id,
     task_id: req.body.taskId,
     subject: req.body.message.subject,
-    body: req.body.message.body
+    body: req.body.message.body,
+    quoteId: req.body.quoteId
   };
 
   const params1 = {
