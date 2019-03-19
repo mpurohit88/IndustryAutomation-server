@@ -13,7 +13,8 @@ const add = function (req, res, next) {
         from_address: req.body.nextSchedule.companyEmailId,
         to_address: req.body.nextSchedule.to,
         frequency: req.body.nextSchedule.schedule_day,
-        time: req.body.nextSchedule.schedule_time
+        time: req.body.nextSchedule.schedule_time,
+        is_reminder: true
     };
 
     const newSchedule = new Schedule(params);
