@@ -37,22 +37,19 @@ const send = function (req, res, next) {
       params.task_id = req.body.nextTaskId;
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
-          // new ActviityTaskHist().complete(req.body.taskId).then(() => {
-          // if (req.body.nextTaskId) {
-          //   new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
-          //     new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
-          //       res.status(200).send({ tasks: tasks });
-          //     });
-          //   });
-          // } else {
-          new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
-            res.status(200).send({ tasks: tasks });
+          new ActviityTaskHist().complete(req.body.taskId).then(() => {
+            if (req.body.nextTaskId) {
+              new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
+                new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                  res.status(200).send({ tasks: tasks });
+                });
+              });
+            } else {
+              new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                res.status(200).send({ tasks: tasks });
+              });
+            }
           });
-          // }
-
-          // Preview only available when sending through an Ethereal account
-          //   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          // });
         });
       });
     });

@@ -91,4 +91,27 @@ Schedule.prototype.getScheduleDetails = function (scheduleId) {
     });
 };
 
+Schedule.prototype.stop = function (scheduleId) {
+    const that = this;
+    return new Promise(function (resolve, reject) {
+        connection.getConnection(function (error, connection) {
+            if (error) {
+                throw error;
+            }
+
+            connection.query("Update schedule set isActive = 0 Where Id = ?", [scheduleId], function (error, rows, fields) {
+                if (!error) {
+                    resolve(rows);
+                } else {
+                    console.log("Error...", error);
+                    reject(error);
+                }
+
+                connection.release();
+                console.log('Process Complete %d', connection.threadId);
+            });
+        });
+    });
+};
+
 module.exports = Schedule;

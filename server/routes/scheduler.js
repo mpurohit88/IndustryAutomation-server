@@ -7,5 +7,6 @@ const schedulerRouter = express.Router();
 
 schedulerRouter.route("/add").post(validateToken, Scheduler.add);
 schedulerRouter.route("/getScheduleDetails").get(validateToken, Scheduler.getScheduleDetails);
+schedulerRouter.route("/done").post(validateToken, Scheduler.done);
 
 module.exports = schedulerRouter;
