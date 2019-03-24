@@ -9,5 +9,6 @@ quoteRouter.route("/create").post(validateToken, Quote.create);
 quoteRouter.route("/start").post(validateToken, Quote.start);
 quoteRouter.route("/all").get(validateToken, Quote.all);
 quoteRouter.route("/getQuoteDetail").get(validateToken, Quote.getQuoteDetail);
+quoteRouter.route("/updateStatus").post(validateToken, Quote.updateStatus);
 
 module.exports = quoteRouter;

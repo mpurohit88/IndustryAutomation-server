@@ -6,6 +6,7 @@ const ActviityTaskHist = require("../models/activityTaskHist");
 const EmailConfig = require("../models/emailConfig");
 const TaskEmail = require("../models/taskEmail");
 const Schedule = require("../models/schedule");
+const Quote = require("../models/quote");
 
 const send = function (req, res, next) {
   let params = {
@@ -39,17 +40,19 @@ const send = function (req, res, next) {
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
           new ActviityTaskHist().complete(req.body.taskId).then(() => {
-            if (req.body.nextTaskId) {
-              new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
+            new Quote({}).update(req.body.quoteId, 3).then(() => {
+              if (req.body.nextTaskId) {
+                new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
+                  new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                    res.status(200).send({ tasks: tasks });
+                  });
+                });
+              } else {
                 new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
                   res.status(200).send({ tasks: tasks });
                 });
-              });
-            } else {
-              new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
-                res.status(200).send({ tasks: tasks });
-              });
-            }
+              }
+            });
           });
         });
       });
@@ -60,17 +63,20 @@ const send = function (req, res, next) {
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
           new ActviityTaskHist().complete(req.body.taskId).then(() => {
-            if (req.body.nextTaskId) {
-              new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
+            new Quote({}).update(req.body.quoteId, 3).then(() => {
+
+              if (req.body.nextTaskId) {
+                new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
+                  new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                    res.status(200).send({ tasks: tasks });
+                  });
+                });
+              } else {
                 new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
                   res.status(200).send({ tasks: tasks });
                 });
-              });
-            } else {
-              new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
-                res.status(200).send({ tasks: tasks });
-              });
-            }
+              }
+            });
           });
         });
       });

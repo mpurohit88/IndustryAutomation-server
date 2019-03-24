@@ -113,4 +113,22 @@ const start = function (req, res, next) {
 	}
 }
 
-module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start };
+const updateStatus = function (req, res, next) {
+	try {
+		new Quote({}).update(req.body.quoteId, req.body.status).then(function () {
+			new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
+				new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
+					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+						new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
+							res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+						})
+					});
+				});
+			});
+		});
+	} catch (err) {
+		console.log("Error: ", err);
+	}
+}
+
+module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus };

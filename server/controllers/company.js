@@ -1,22 +1,24 @@
 const Company = require("../models/company.js")
 
 const register = function (req, res, next) {
+	const data = JSON.parse(req.body.data)
+
 	let params = {
 		organizationId: req.decoded.organizationId,
 		createdBy: req.decoded.id,
-		name: req.body.name,
-		address: req.body.address,
-		city: req.body.city,
-		state: req.body.state,
-		country: req.body.country,
-		tele: req.body.tele,
-		fax: req.body.fax,
-		mobileNo: req.body.mobileNo,
-		email: req.body.email,
-		website: req.body.website,
-		gstn: req.body.gstn,
-		logo: req.body.logo,
-		manufacturerOf: req.body.manufacturerOf,
+		name: data.name,
+		address: data.address,
+		city: data.city,
+		state: data.state,
+		country: data.country,
+		tele: data.tele,
+		fax: data.fax,
+		mobileNo: data.mobileNo,
+		email: data.email,
+		website: data.website,
+		gstn: data.gstn,
+		logo: req.file.filename,
+		manufacturerOf: data.manufacturerOf,
 	};
 	const newCompany = new Company(params);
 

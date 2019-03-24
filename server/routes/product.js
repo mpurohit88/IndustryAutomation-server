@@ -5,7 +5,11 @@ const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
 
-    callback(null, './build/img/product/');
+    if (process.env.NODE_ENV === 'development') {
+      callback(null, './dist/img/product/');
+    } else {
+      callback(null, './build/img/product/');
+    }
   },
   filename: function (req, file, callback) {
 
