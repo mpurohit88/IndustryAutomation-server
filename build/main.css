@@ -1296,9 +1296,9 @@ div.checkmark .disabled-circle:before {
 
 .vertical-line {
   width: 2px;
-  height: 87px;
+  height: 88px;
   background: #3c9aae;
-  margin: 32px auto 0 20px;
+  margin: 65px auto 0 20px;
   position: absolute;
   left: 24px;
 }
