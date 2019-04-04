@@ -3,6 +3,7 @@ const Task = require("../models/task")
 const UserActivity = require("../models/userActivity")
 const ActviityTaskHist = require("../models/activityTaskHist")
 const QuoteProduct = require("../models/quoteProduct")
+const DispatchSummary = require("../models/dispatchSummary")
 
 const create = function (req, res, next) {
 	let params = {
@@ -131,4 +132,35 @@ const updateStatus = function (req, res, next) {
 	}
 }
 
-module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus };
+const updateDispatchSummary = function (req, res, next) {
+	try {
+		let params = {
+			createdBy: req.decoded.id,
+			task_id: req.body.acivityTaskId,
+			customer_id: req.body.companyId,
+			quote_id: req.body.quoteId,
+			order_no: req.body.data.order_no,
+			order_date: req.body.data.order_date,
+			invoice_no: req.body.data.invoice_no,
+			invoice_date: req.body.data.invoice_date,
+			builty_no: req.body.data.builty_no,
+			up_to: req.body.data.up_to
+		};
+
+		new DispatchSummary(params).add().then(() => {
+			new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
+				new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
+					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+						new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
+							res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+						})
+					});
+				});
+			});
+		});
+	} catch (err) {
+		console.log("Error: ", err);
+	}
+}
+
+module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus, updateDispatchSummary: updateDispatchSummary };
