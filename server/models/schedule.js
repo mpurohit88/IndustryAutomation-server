@@ -6,7 +6,7 @@ const Schedule = function (params) {
         this.scheduleId = params.scheduleId,
         this.company_id = params.company_id,
         this.subject = params.subject,
-        this.message_body = '',
+        this.message_body = this.message_body,
         this.next_reminder_date = new Date(),
         this.from_address = params.from_address,
         this.to_address = params.to_address,
@@ -25,6 +25,7 @@ Schedule.prototype.add = function () {
                 throw error;
             }
 
+            console.log("************", that);
             let values = [
                 [that.task_id, that.company_id, that.subject, that.next_reminder_date, that.message_body, that.from_address, that.to_address, that.frequency, that.time, that.is_reminder, that.isActive, that.createdBy]
             ]
