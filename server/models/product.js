@@ -47,7 +47,7 @@ Product.prototype.all = function () {
 
 			const isActive = 1;
 
-			connection.query('select p.id, p.name, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy from product p inner join user u on p.createdBy = u.id where u.isActive=?', [isActive], function (error, rows, fields) {
+			connection.query('select p.id, p.name, p.description, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy from product p inner join user u on p.createdBy = u.id where u.isActive=?', [isActive], function (error, rows, fields) {
 
 				if (!error) {
 					resolve(rows);
@@ -72,7 +72,7 @@ Product.prototype.allByCompanyId = function (companyId) {
 
 			const isActive = 1;
 
-			connection.query('select p.id, p.name, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy from product p inner join user u on p.createdBy = u.id where u.isActive=? and p.companyId=?', [isActive, companyId], function (error, rows, fields) {
+			connection.query('select p.id, p.name, p.description, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy from product p inner join user u on p.createdBy = u.id where u.isActive=? and p.companyId=?', [isActive, companyId], function (error, rows, fields) {
 
 				if (!error) {
 					resolve(rows);
