@@ -17,8 +17,6 @@ const send = function (req, res, next) {
     quoteId: req.body.quoteId
   };
 
-  console.log("data............", req.body);
-
   const params1 = {
     createdBy: req.decoded.id,
     scheduleId: undefined,
