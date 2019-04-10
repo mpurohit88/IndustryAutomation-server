@@ -2,7 +2,7 @@ const Schedule = require("../models/schedule");
 const ActviityTaskHist = require("../models/activityTaskHist");
 const Quote = require("../models/quote")
 
-const add = function (req, res, next) {
+const add = function (req, res, next) {s
     const params = {
         createdBy: req.decoded.id,
         scheduleId: req.body.nextSchedule.scheduleId,
