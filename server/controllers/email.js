@@ -17,6 +17,8 @@ const send = function (req, res, next) {
     quoteId: req.body.quoteId
   };
 
+  console.log("data............", req.body);
+
   const params1 = {
     createdBy: req.decoded.id,
     scheduleId: undefined,
@@ -27,8 +29,8 @@ const send = function (req, res, next) {
     next_reminder_date: new Date(),
     from_address: req.body.message.from,
     to_address: req.body.message.to,
-    cc: req.body.message.cc || '',
-    bcc: req.body.message.bcc || '',
+    cc_address: req.body.message.cc || '',
+    bcc_address: req.body.message.bcc || '',
     is_reminder: false,
     frequency: 0,
     time: 0
