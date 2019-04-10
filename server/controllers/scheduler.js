@@ -3,14 +3,13 @@ const ActviityTaskHist = require("../models/activityTaskHist");
 const Quote = require("../models/quote")
 
 const add = function (req, res, next) {
-
     const params = {
         createdBy: req.decoded.id,
         scheduleId: req.body.nextSchedule.scheduleId,
         task_id: req.body.taskId,
         company_id: req.decoded.companyId,
         subject: req.body.nextSchedule.subject,
-        message_body: '',
+        message_body: req.body.nextSchedule.message_body,
         next_reminder_date: req.body.next_reminder_date,
         from_address: req.body.nextSchedule.companyEmailId,
         to_address: req.body.nextSchedule.to,
