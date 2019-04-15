@@ -4,14 +4,15 @@ const register = function (req, res, next) {
 	let params = {
 		createdBy: req.decoded.id,
 		organizationId: req.decoded.organizationId,
-		companyId: req.body.company_name,
+		id: req.body.id,
+		companyId: req.body.companyId,
 		name: req.body.name,
 		userId: req.body.userId,
 		password: req.body.password,
 		designation: req.body.designation,
 		area: req.body.area,
 		address: req.body.address,
-		mobNo: req.body.mobNo,
+		mobileNo: req.body.mobileNo,
 		role: 'user',
 		isActive: 1,
 		email: req.body.email
@@ -19,15 +20,28 @@ const register = function (req, res, next) {
 	const newUser = new User(params);
 
 	try {
-		newUser.register().then(function (result) {
-			if (req.decoded.role === 'admin') {
-				new User({}).all().then(function (userList) {
-					res.send({ credentials: result, userList: userList });
-				});
-			} else {
-				res.send([]);
-			}
-		});
+		if (params.id) {
+			newUser.update().then(function (result) {
+				if (req.decoded.role === 'admin') {
+					new User({}).all().then(function (userList) {
+						res.send({ credentials: result, userList: userList });
+					});
+				} else {
+					res.send([]);
+				}
+			});
+		} else {
+			newUser.register().then(function (result) {
+				if (req.decoded.role === 'admin') {
+					new User({}).all().then(function (userList) {
+						res.send({ credentials: result, userList: userList });
+					});
+				} else {
+					res.send([]);
+				}
+			});
+		}
+
 	} catch (err) {
 		console.log("Error: ", err);
 	}

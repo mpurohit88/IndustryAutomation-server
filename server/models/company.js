@@ -1,5 +1,6 @@
-var connection = require("../lib/connection.js");
-var Company = function (params) {
+const connection = require("../lib/connection.js");
+const Company = function (params) {
+	this.id = params.id;
 	this.organizationId = params.organizationId,
 		this.createdBy = params.createdBy,
 		this.name = params.name,
@@ -16,6 +17,32 @@ var Company = function (params) {
 		this.logo = params.logo,
 		this.manufacturerOf = params.manufacturerOf,
 		this.isActive = 1
+};
+
+Company.prototype.update = function () {
+	const that = this;
+	return new Promise(function (resolve, reject) {
+		connection.getConnection(function (error, connection) {
+			if (error) {
+				throw error;
+			}
+
+			let values = [that.organizationId, that.name, that.address, that.city, that.state, that.country, that.tele, that.fax, that.mobileNo, that.email, that.website, that.gstn, that.logo, that.manufacturerOf, that.isActive, that.createdBy, that.id]
+
+			connection.query('UPDATE company set organizationId = ?, name = ?, address = ?, city = ?, state = ?, country = ?, tele = ?,fax = ?,mobileNo = ?,email = ?,website = ?,gstn = ?,logo = ?,manufacturerOf = ?,isActive = ?,updatedBy = ? WHERE id = ?', values, function (error, rows, fields) {
+
+				if (!error) {
+					resolve(rows);
+				} else {
+					console.log("Error...", error);
+					reject(error);
+				}
+
+				connection.release();
+				console.log('Process Complete %d', connection.threadId);
+			});
+		});
+	});
 };
 
 Company.prototype.register = function () {

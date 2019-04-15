@@ -30,6 +30,28 @@ CustomerContact.prototype.add = function (customer, contactList) {
 	});
 };
 
+CustomerContact.prototype.delete = function (customerId) {
+	return new Promise(function (resolve, reject) {
+		connection.getConnection(function (error, connection) {
+			if (error) {
+				throw error;
+			}
+
+			connection.query("DELETE FROM `customer_contact` WHERE customerId = ?", [customerId], function (error, rows, fields) {
+				if (!error) {
+					resolve(rows);
+				} else {
+					console.log("Error...", error);
+					reject(error);
+				}
+
+				connection.release();
+				console.log('Process Complete %d', connection.threadId);
+			});
+		});
+	});
+};
+
 CustomerContact.prototype.getByCustomerId = function (customerId) {
 	return new Promise(function (resolve, reject) {
 		connection.getConnection(function (error, connection) {

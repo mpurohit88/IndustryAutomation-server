@@ -152,11 +152,19 @@ img {
   background: #26bebe;
   color: white;
 }
+
+._1u4cTgknkzXxoTYpWb7R8s .imgEdit {
+  display: flex;
+}
 /* PUT SASS VARIABLES HERE */
 
 ._3Rp1K0z42fIsmtKV46bf8n thead {
   background: #26bebe;
   color: white;
+}
+
+._3Rp1K0z42fIsmtKV46bf8n .imgEdit {
+  display: flex;
 }
 /* PUT SASS VARIABLES HERE */
 
@@ -192,6 +200,10 @@ table thead tr th {
 
 .personList {
   font-size: 12px;
+}
+
+.imgEdit {
+  display: flex;
 }
 /* PUT SASS VARIABLES HERE */
 

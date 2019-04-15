@@ -4,6 +4,7 @@ const register = function (req, res, next) {
 	const data = JSON.parse(req.body.data)
 
 	let params = {
+		id: data.id,
 		organizationId: req.decoded.organizationId,
 		createdBy: req.decoded.id,
 		name: data.name,
@@ -23,11 +24,19 @@ const register = function (req, res, next) {
 	const newCompany = new Company(params);
 
 	try {
-		newCompany.register().then(function () {
-			new Company({}).all().then(function (companyList) {
-				res.send(companyList);
+		if (params.id) {
+			newCompany.update().then(function () {
+				new Company({}).all().then(function (companyList) {
+					res.send(companyList);
+				});
 			});
-		});
+		} else {
+			newCompany.register().then(function () {
+				new Company({}).all().then(function (companyList) {
+					res.send(companyList);
+				});
+			});
+		}
 	} catch (err) {
 		console.log("Error: ", err);
 	}
