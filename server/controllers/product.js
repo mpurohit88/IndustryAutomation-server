@@ -6,6 +6,7 @@ const add = function (req, res, next) {
 	let params = {
 		createdBy: req.decoded.id,
 		companyId: req.decoded.companyId,
+		id: data.id,
 		name: data.name,
 		description: data.description,
 		unit: data.unit,
@@ -15,17 +16,31 @@ const add = function (req, res, next) {
 	const newProduct = new Product(params);
 
 	try {
-		newProduct.add().then(function (result) {
-			if (req.decoded.role === 'admin') {
-				new Product({}).all().then(function (productList) {
-					res.send(productList);
-				});
-			} else {
-				new Product({}).allByCompanyId(req.decoded.companyId).then(function (productList) {
-					res.send(productList);
-				});
-			}
-		});
+		if (params.id) {
+			newProduct.update().then(function (result) {
+				if (req.decoded.role === 'admin') {
+					new Product({}).all().then(function (productList) {
+						res.send(productList);
+					});
+				} else {
+					new Product({}).allByCompanyId(req.decoded.companyId).then(function (productList) {
+						res.send(productList);
+					});
+				}
+			});
+		} else {
+			newProduct.add().then(function (result) {
+				if (req.decoded.role === 'admin') {
+					new Product({}).all().then(function (productList) {
+						res.send(productList);
+					});
+				} else {
+					new Product({}).allByCompanyId(req.decoded.companyId).then(function (productList) {
+						res.send(productList);
+					});
+				}
+			});
+		}
 	} catch (err) {
 		console.log("Error: ", err);
 	}
