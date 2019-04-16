@@ -116,11 +116,30 @@ Customer.prototype.all = function () {
 			}
 
 			const isActive = 1;
+			let result = [];
 
 			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated from customer where isActive=?', [isActive], function (error, rows, fields) {
 
 				if (!error) {
-					resolve(rows);
+
+					rows.map((customer, index) => {
+						connection.query('select id, name, designation, department, email, mobileNo, dateTimeCreated from customer_contact where customerId=?', [customer.id], function (error, customerContact, fields) {
+							if (!error) {
+								let obj = customer;
+								obj.customerContact = customerContact;
+
+								result.push(obj);
+								if (index === rows.length - 1) {
+									resolve(result);
+								}
+							} else {
+								console.log("Error...", error);
+								reject(error);
+							}
+						});
+					});
+
+					// resolve(rows);
 				} else {
 					console.log("Error...", error);
 					reject(error);
