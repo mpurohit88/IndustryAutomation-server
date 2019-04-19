@@ -13,7 +13,7 @@ QuoteProduct.prototype.getByQuoteId = function (quoteId) {
 				throw error;
 			}
 
-			connection.query('select qp.product_id, p.name, p.description, p.unit, qp.quantity, qp.gstn, qp.rate, p.hsnCode, p.imgName, p.description from quote_product qp inner join product p on qp.product_id = p.id where qp.quote_id = ?', [quoteId], function (error, rows, fields) {
+			connection.query('select qp.product_id, p.name, q.currency_type, p.description, p.unit, qp.quantity, qp.gstn, qp.rate, p.hsnCode, p.imgName, p.description from quote_product qp inner join product p on qp.product_id = p.id inner join quote q on qp.quote_id = q.id where qp.quote_id = ?', [quoteId], function (error, rows, fields) {
 
 				if (!error) {
 					resolve(rows);
