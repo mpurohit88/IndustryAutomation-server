@@ -11,6 +11,7 @@ const create = function (req, res, next) {
 		party_name: req.body.quote.party_name,
 		contact_person: req.body.quote.contact_person,
 		address: req.body.quote.address,
+		currency_type: req.body.quote.currency_type,
 		phoneNo: req.body.quote.phoneNo,
 		mobileNo: req.body.quote.mobileNo,
 		products: req.body.productList
