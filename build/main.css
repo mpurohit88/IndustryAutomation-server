@@ -146,6 +146,13 @@ img {
   display: block;
   pointer-events: none;
 }
+
+@media (min-width: 576px) {
+  ._1Nsop7Pn6srw07GZfaqpBM .modal-dialog {
+    max-width: 1198px !important;
+    margin: 1.75rem auto;
+  }
+}
 /* PUT SASS VARIABLES HERE */
 
 ._1u4cTgknkzXxoTYpWb7R8s thead {

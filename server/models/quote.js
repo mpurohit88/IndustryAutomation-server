@@ -34,10 +34,10 @@ Quote.prototype.create = function () {
         ];
 
         that.products.map((product) => {
-          productValues.push([quoteId, product.product_id, product.qty, product.gst, product.rate, that.isActive, that.createdBy])
+          productValues.push([quoteId, product.product_id, product.qty, product.description, product.gst, product.rate, that.isActive, that.createdBy])
         });
 
-        connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
+        connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
 
           if (!error) {
             resolve({ 'quote_id': quoteId });

@@ -7,7 +7,7 @@ const Schedule = function (params) {
         this.company_id = params.company_id,
         this.subject = params.subject,
         this.message_body = params.message_body,
-        this.next_reminder_date = new Date(),
+        this.next_reminder_date = params.next_reminder_date,
         this.from_address = params.from_address,
         this.to_address = params.to_address,
         this.cc_address = params.cc_address,
@@ -20,6 +20,7 @@ const Schedule = function (params) {
 };
 
 Schedule.prototype.add = function () {
+
     const that = this;
     return new Promise(function (resolve, reject) {
         connection.getConnection(function (error, connection) {
@@ -48,15 +49,16 @@ Schedule.prototype.add = function () {
 
 Schedule.prototype.update = function () {
     const that = this;
+
     return new Promise(function (resolve, reject) {
         connection.getConnection(function (error, connection) {
             if (error) {
                 throw error;
             }
 
-            let values = [that.from_address, that.to_address, that.cc_address, that.bcc_address, that.frequency, that.time, that.scheduleId];
+            let values = [that.from_address, that.to_address, that.cc_address, that.bcc_address, that.next_reminder_date, that.frequency, that.time, that.scheduleId];
 
-            connection.query("Update schedule set from_address = ?,to_address = ?, cc_address = ?, bcc_address = ?, frequency = ?,time = ? Where Id = ?", values, function (error, rows, fields) {
+            connection.query("Update schedule set from_address = ?,to_address = ?, cc_address = ?, bcc_address = ?,next_reminder_date = ?, frequency = ?,time = ? Where Id = ?", values, function (error, rows, fields) {
                 if (!error) {
                     resolve(rows);
                 } else {
@@ -79,7 +81,7 @@ Schedule.prototype.getScheduleDetails = function (scheduleId) {
                 throw error;
             }
 
-            connection.query("SELECT Frequency, Time, cc_address, bcc_address From Schedule WHERE id = ?", [scheduleId], function (error, rows, fields) {
+            connection.query("SELECT Frequency, next_reminder_date, Time, cc_address, bcc_address From Schedule WHERE id = ?", [scheduleId], function (error, rows, fields) {
                 if (!error) {
                     resolve(rows);
                 } else {
