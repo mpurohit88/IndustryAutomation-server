@@ -37,4 +37,29 @@ TaskEmail.prototype.add = function () {
     });
 };
 
+TaskEmail.prototype.getEmailBody = function (task_id) {
+    const self = this;
+
+    return new Promise(function (resolve, reject) {
+        connection.getConnection(function (error, connection) {
+            if (error) {
+                throw error;
+            }
+
+            connection.query('select body from task_email where isActive=1 and task_id=? order by dateTimeCreated desc LIMIT 1;', [task_id], function (error, rows, fields) {
+
+                if (!error) {
+                    resolve(rows);
+                } else {
+                    console.log("Error...", error);
+                    reject(error);
+                }
+
+                connection.release();
+                console.log('Process Complete %d', connection.threadId);
+            });
+        });
+    });
+}
+
 module.exports = TaskEmail;

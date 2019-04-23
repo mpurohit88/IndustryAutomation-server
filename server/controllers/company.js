@@ -20,6 +20,7 @@ const register = function (req, res, next) {
 		gstn: data.gstn,
 		logo: req.file ? req.file.filename : '',
 		manufacturerOf: data.manufacturerOf,
+		isActive: data.isActive
 	};
 	const newCompany = new Company(params);
 

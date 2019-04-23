@@ -11,7 +11,8 @@ const add = function (req, res, next) {
 		description: data.description,
 		unit: data.unit,
 		hsnCode: data.hsnCode,
-		imgName: req.file ? req.file.filename : ''
+		imgName: req.file ? req.file.filename : '',
+		isActive: data.isActive
 	};
 	const newProduct = new Product(params);
 

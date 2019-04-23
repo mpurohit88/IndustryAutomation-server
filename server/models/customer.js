@@ -8,7 +8,7 @@ const Customer = function (params) {
 	this.gstn = params.gstn;
 	this.email = params.email
 	this.createdBy = params.createdBy;
-	this.isActive = 1;
+	this.isActive = params.isActive ? 1 : 0;
 };
 
 Customer.prototype.add = function () {
@@ -74,7 +74,7 @@ Customer.prototype.allByUserId = function (userId) {
 			const isActive = 1;
 			let result = [];
 
-			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated from customer where isActive=? and createdBy=?', [isActive, userId], function (error, rows, fields) {
+			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated, isActive from customer where isActive=? and createdBy=?', [isActive, userId], function (error, rows, fields) {
 
 				if (!error) {
 
@@ -118,7 +118,7 @@ Customer.prototype.all = function () {
 			const isActive = 1;
 			let result = [];
 
-			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated from customer where isActive=?', [isActive], function (error, rows, fields) {
+			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated, isActive from customer where isActive=?', [isActive], function (error, rows, fields) {
 
 				if (!error) {
 
