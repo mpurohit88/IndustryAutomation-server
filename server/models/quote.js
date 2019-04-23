@@ -14,7 +14,7 @@ const Quote = function (params) {
 
 Quote.prototype.create = function () {
   const that = this;
-  return new Promise(function (resolve, contact_personreject) {
+  return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
       if (error) {
         throw error;
