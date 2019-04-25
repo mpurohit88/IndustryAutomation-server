@@ -8,6 +8,7 @@ const DispatchSummary = require("../models/dispatchSummary")
 const create = function (req, res, next) {
 	let params = {
 		createdBy: req.decoded.id,
+		id: req.body.quote.id,
 		party_name: req.body.quote.party_name,
 		contact_person: req.body.quote.contact_person,
 		address: req.body.quote.address,

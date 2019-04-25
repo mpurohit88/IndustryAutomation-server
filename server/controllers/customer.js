@@ -10,7 +10,8 @@ const add = function (req, res, next) {
 		contactPerson: req.body.contactList,
 		tele: req.body.customer.telephone,
 		gstn: req.body.customer.gstn,
-		email: req.body.customer.email
+		email: req.body.customer.email,
+		isActive: req.body.customer.isActive
 	};
 	const newCustomer = new Customer(params);
 

@@ -73,28 +73,30 @@ Customer.prototype.allByUserId = function (userId) {
 
 			const isActive = 1;
 			let result = [];
-
 			connection.query('select id, name, address, telephone, gstn, email, dateTimeCreated, isActive from customer where isActive=? and createdBy=?', [isActive, userId], function (error, rows, fields) {
 
 				if (!error) {
 
-					rows.map((customer, index) => {
-						connection.query('select id, name, designation, department, email, mobileNo, dateTimeCreated from customer_contact where customerId=?', [customer.id], function (error, customerContact, fields) {
-							if (!error) {
-								let obj = customer;
-								obj.customerContact = customerContact;
+					if (rows.length > 0) {
+						rows.map((customer, index) => {
+							connection.query('select id, name, designation, department, email, mobileNo, dateTimeCreated from customer_contact where customerId=?', [customer.id], function (error, customerContact, fields) {
+								if (!error) {
+									let obj = customer;
+									obj.customerContact = customerContact;
 
-								result.push(obj);
-								if (index === rows.length - 1) {
-									resolve(result);
+									result.push(obj);
+									if (index === rows.length - 1) {
+										resolve(result);
+									}
+								} else {
+									console.log("Error...", error);
+									reject(error);
 								}
-							} else {
-								console.log("Error...", error);
-								reject(error);
-							}
+							});
 						});
-					});
-
+					} else {
+						resolve(rows);
+					}
 					// resolve(rows);
 				} else {
 					console.log("Error...", error);
