@@ -98,7 +98,7 @@ Product.prototype.allByCompanyId = function (companyId) {
 
 			const isActive = 1;
 
-			connection.query('select p.id, p.name, p.description, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy, p.isActive from product p inner join user u on p.createdBy = u.id where p.companyId=? and p.isActive = 1', [isActive, companyId], function (error, rows, fields) {
+			connection.query('select p.id, p.name, p.description, p.unit, p.hsnCode, p.imgName, p.dateTimeCreated, u.name as createdBy, p.isActive from product p inner join user u on p.createdBy = u.id where p.companyId=? and p.isActive = 1', [companyId, isActive], function (error, rows, fields) {
 
 				if (!error) {
 					resolve(rows);
