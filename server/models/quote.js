@@ -14,17 +14,71 @@ const Quote = function (params) {
 
 Quote.prototype.create = function () {
   const that = this;
+
+  try {
+    return new Promise(function (resolve, reject) {
+      connection.getConnection(function (error, connection) {
+        if (error) {
+          throw error;
+        }
+
+        let values = [
+          [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.createdBy]
+        ]
+
+        console.log("Quote Data............", that);
+
+        connection.query('INSERT INTO quote(party_id,address,currency_type,phoneNo,mobileNo,contact_person_id,status,isActive,createdBy) VALUES ?', [values], function (error, rows, fields) {
+
+          if (error) reject(error);
+
+          if (rows) {
+            let quoteId = rows.insertId;
+
+            let productValues = [
+            ];
+
+            that.products.map((product) => {
+              productValues.push([quoteId, product.product_id, product.quantity, product.description, product.gstn, product.rate, that.isActive, that.createdBy])
+            });
+
+            connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
+
+              if (!error) {
+                resolve({ 'quote_id': quoteId });
+              } else {
+                console.log("Error...", error);
+                reject(error)
+              }
+
+              connection.release();
+              console.log('Process Complete %d', connection.threadId);
+            });
+          } else {
+            console.log("Quote Id did not got generated....", rows)
+            reject({ 'Error': 'Quote Id did not generated' })
+          }
+        });
+      });
+    });
+  }
+  catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+Quote.prototype.update = function () {
+  const that = this;
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
       if (error) {
         throw error;
       }
 
-      let values = [
-        [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.createdBy]
-      ]
+      let values = [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.id];
 
-      connection.query('INSERT INTO quote(party_id,address,currency_type,phoneNo,mobileNo,contact_person_id,status,isActive,createdBy) VALUES ?', [values], function (error, rows, fields) {
+      connection.query('UPDATE quote SET party_id=?, address=?, currency_type=?, phoneNo=?, mobileNo=?, contact_person_id=?, status=?, isActive=? WHERE id = ?', [values], function (error, rows, fields) {
 
         if (error) reject(error);
 
