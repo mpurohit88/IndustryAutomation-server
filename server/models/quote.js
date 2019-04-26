@@ -1,5 +1,6 @@
 const connection = require("../lib/connection.js");
 const Quote = function (params) {
+  this.id = params.id;
   this.party_name = params.party_name;
   this.address = params.address;
   this.currency_type = params.currency_type;
@@ -68,7 +69,7 @@ Quote.prototype.create = function () {
   }
 };
 
-Quote.prototype.update = function () {
+Quote.prototype.updateQuote = function () {
   const that = this;
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
@@ -76,33 +77,21 @@ Quote.prototype.update = function () {
         throw error;
       }
 
-      let values = [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.id];
+      let values = [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.isActive, that.id];
 
-      connection.query('UPDATE quote SET party_id=?, address=?, currency_type=?, phoneNo=?, mobileNo=?, contact_person_id=?, status=?, isActive=? WHERE id = ?', [values], function (error, rows, fields) {
+      connection.query('UPDATE quote SET party_id=?, address=?, currency_type=?, phoneNo=?, mobileNo=?, contact_person_id=?, isActive=? WHERE id = ?', values, function (error, rows, fields) {
 
         if (error) reject(error);
 
-        let quoteId = rows.insertId;
+        if (!error) {
+          resolve({ 'quote_id': that.id });
+        } else {
+          console.log("Error...", error);
+          reject(error)
+        }
 
-        let productValues = [
-        ];
-
-        that.products.map((product) => {
-          productValues.push([quoteId, product.product_id, product.quantity, product.description, product.gstn, product.rate, that.isActive, that.createdBy])
-        });
-
-        connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
-
-          if (!error) {
-            resolve({ 'quote_id': quoteId });
-          } else {
-            console.log("Error...", error);
-            reject(error)
-          }
-
-          connection.release();
-          console.log('Process Complete %d', connection.threadId);
-        });
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
       });
     });
   });

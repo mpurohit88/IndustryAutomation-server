@@ -3,7 +3,6 @@ const QuoteProduct = function () {
 
 };
 
-
 QuoteProduct.prototype.getByQuoteId = function (quoteId) {
 	return new Promise(function (resolve, reject) {
 		connection.getConnection(function (error, connection) {
@@ -28,5 +27,57 @@ QuoteProduct.prototype.getByQuoteId = function (quoteId) {
 		});
 	});
 }
+
+
+QuoteProduct.prototype.delete = function (quote_id) {
+	return new Promise(function (resolve, reject) {
+		connection.getConnection(function (error, connection) {
+			if (error) {
+				throw error;
+			}
+
+			connection.query("DELETE FROM `quote_product` WHERE quote_id = ?", [quote_id], function (error, rows, fields) {
+				if (!error) {
+					resolve(rows);
+				} else {
+					console.log("Error...", error);
+					reject(error);
+				}
+
+				connection.release();
+				console.log('Process Complete %d', connection.threadId);
+			});
+		});
+	});
+};
+
+QuoteProduct.prototype.add = function (id, products, createdBy) {
+	return new Promise(function (resolve, reject) {
+		connection.getConnection(function (error, connection) {
+			if (error) {
+				throw error;
+			}
+
+			let productValues = [
+			];
+
+			products.map((data) => {
+				productValues.push([id, data.product_id, data.quantity, data.description, data.gstn, data.rate, 1, createdBy])
+			});
+
+			connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, rows, fields) {
+				if (!error) {
+					resolve(rows);
+				} else {
+					console.log("Error...", error);
+					reject(error);
+				}
+
+				connection.release();
+				console.log('Process Complete %d', connection.threadId);
+			});
+		});
+	});
+};
 
 module.exports = QuoteProduct;

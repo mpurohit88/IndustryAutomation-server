@@ -23,29 +23,49 @@ const create = function (req, res, next) {
 	try {
 		if (req.body.productList.length <= 0) throw new Error('Product list can not be empty');
 
-		newQuote.create().then(function (result) {
-			if (req.decoded.role === 'admin') {
-				new Quote({}).all().then(function (quoteList) {
-					new Task().all().then(function (tasks) {
-						new UserActivity().insert(req.decoded.id, result.quote_id).then(function (userActivityId) {
-							new ActviityTaskHist().insert(userActivityId, tasks).then(function () {
+		if (params.id) {
+			newQuote.updateQuote().then(function () {
+				new QuoteProduct({}).delete(params.id).then(() => {
+					new QuoteProduct({}).add(params.id, params.products, params.createdBy).then(function () {
+
+						if (req.decoded.role === 'admin') {
+							new Quote({}).all().then(function (quoteList) {
 								res.send(quoteList);
+							});
+						} else {
+							new Quote({}).allByUserId(req.decoded.id).then(function (quoteList) {
+								res.send(quoteList);
+							});
+						}
+
+					});
+				});
+			});
+		} else {
+			newQuote.create().then(function (result) {
+				if (req.decoded.role === 'admin') {
+					new Quote({}).all().then(function (quoteList) {
+						new Task().all().then(function (tasks) {
+							new UserActivity().insert(req.decoded.id, result.quote_id).then(function (userActivityId) {
+								new ActviityTaskHist().insert(userActivityId, tasks).then(function () {
+									res.send(quoteList);
+								});
 							});
 						});
 					});
-				});
-			} else {
-				new Quote({}).allByUserId(req.decoded.id).then(function (quoteList) {
-					new Task().all().then(function (tasks) {
-						new UserActivity().insert(req.decoded.id, result.quote_id).then(function (userActivityId) {
-							new ActviityTaskHist().insert(userActivityId, tasks).then(function () {
-								res.send(quoteList);
+				} else {
+					new Quote({}).allByUserId(req.decoded.id).then(function (quoteList) {
+						new Task().all().then(function (tasks) {
+							new UserActivity().insert(req.decoded.id, result.quote_id).then(function (userActivityId) {
+								new ActviityTaskHist().insert(userActivityId, tasks).then(function () {
+									res.send(quoteList);
+								});
 							});
 						});
 					});
-				});
-			}
-		});
+				}
+			});
+		}
 	} catch (err) {
 		console.log("Error: ", err);
 		res.status(500).send(err);
