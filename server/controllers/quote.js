@@ -4,6 +4,7 @@ const UserActivity = require("../models/userActivity")
 const ActviityTaskHist = require("../models/activityTaskHist")
 const QuoteProduct = require("../models/quoteProduct")
 const DispatchSummary = require("../models/dispatchSummary")
+const Schedule = require("../models/schedule")
 
 const create = function (req, res, next) {
 	let params = {
@@ -138,7 +139,14 @@ const start = function (req, res, next) {
 
 const updateStatus = function (req, res, next) {
 	try {
+		const status = req.body.status;
+
 		new Quote({}).update(req.body.quoteId, req.body.status).then(function () {
+
+			if(Number(status) > 99) {
+				new Schedule({}).stopAll(req.body.quoteId)
+			}
+
 			new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
 				new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
 					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {

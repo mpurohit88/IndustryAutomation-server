@@ -119,4 +119,28 @@ Schedule.prototype.stop = function (scheduleId) {
     });
 };
 
+
+Schedule.prototype.stopAll = function (quoteId) {
+    const that = this;
+    return new Promise(function (resolve, reject) {
+        connection.getConnection(function (error, connection) {
+            if (error) {
+                throw error;
+            }
+
+            connection.query("Update schedule set isActive = 0 Where task_id in (select id from activity_task_hist where userActivityId in (select id from user_activity where quoteId = ?))", [quoteId], function (error, rows, fields) {
+                if (!error) {
+                    resolve(rows);
+                } else {
+                    console.log("Error...", error);
+                    reject(error);
+                }
+
+                connection.release();
+                console.log('Process Complete %d', connection.threadId);
+            });
+        });
+    });
+};
+
 module.exports = Schedule;
