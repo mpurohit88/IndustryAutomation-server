@@ -19,6 +19,7 @@ const schedulerRouter = require('./server/routes/scheduler');
 const customerContactRouter = require('./server/routes/customerContact');
 const activityTaskHistRouter = require('./server/routes/activityTaskHist');
 const taskEmailRouter = require('./server/routes/taskEmail');
+const emailLogRouter = require('./server/routes/emailLog');
 const authRouter = require('./server/routes/auth');
 
 app.use(bodyParser.json());
@@ -43,6 +44,7 @@ app.use('/api/scheduler', schedulerRouter);
 app.use('/api/customerContact', customerContactRouter);
 app.use('/api/activityTaskHist', activityTaskHistRouter);
 app.use('/api/taskEmail', taskEmailRouter);
+app.use('/api/emailLog', emailLogRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/', function (req, res) {
