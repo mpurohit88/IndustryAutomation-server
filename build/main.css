@@ -631,6 +631,12 @@ h6 {
 }
 /* PUT SASS VARIABLES HERE */
 
+._1jSEarS46I0w6bmlQ8VF7c thead {
+  background: #26bebe;
+  color: white;
+}
+/* PUT SASS VARIABLES HERE */
+
 .tm4Wl1WVh-PX6IcRT5o_q {
   background-color: white;
   padding: 14px;
@@ -1167,6 +1173,13 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.btn-fixed {
+  position: fixed;
+  z-index: 100;
+  right: 60px;
+  top: 93px;
+}
 /* PUT SASS VARIABLES HERE */
 
 .quote {
@@ -1320,4 +1333,8 @@ div.checkmark .disabled-circle:before {
   margin: 65px auto 0 20px;
   position: absolute;
   left: 24px;
+}
+
+.float-right {
+  float: right;
 }
