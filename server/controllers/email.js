@@ -9,26 +9,35 @@ const Schedule = require("../models/schedule");
 const Quote = require("../models/quote");
 
 const send = function (req, res, next) {
+  const data = JSON.parse(req.body.data)
+
+  let attachments = '';
+
+  req.files.map((file) => {
+    attachments = attachments === '' ? file.filename : (attachments + ',' + file.filename);
+  });
+
   let params = {
     createdBy: req.decoded.id,
-    task_id: req.body.taskId,
-    subject: req.body.message.subject,
-    body: req.body.message.body,
-    quoteId: req.body.quoteId
+    task_id: data.taskId,
+    subject: data.subject,
+    body: data.body,
+    quoteId: data.quoteId
   };
 
   const params1 = {
     createdBy: req.decoded.id,
     scheduleId: undefined,
-    task_id: req.body.taskId,
+    task_id: data.taskId,
     company_id: req.decoded.companyId,
-    subject: req.body.message.subject,
+    subject: data.subject,
     message_body: '',
     next_reminder_date: new Date(),
-    from_address: req.body.message.from,
-    to_address: req.body.message.to,
-    cc_address: req.body.message.cc || '',
-    bcc_address: req.body.message.bcc || '',
+    from_address: data.from,
+    to_address: data.to,
+    cc_address: data.cc || '',
+    bcc_address: data.bcc || '',
+    attachments: attachments,
     is_reminder: false,
     frequency: 0,
     time: 0
@@ -38,19 +47,19 @@ const send = function (req, res, next) {
 
   if (process.env.NODE_ENV === 'development') {
     new TaskEmail(params).add().then(() => {
-      params.task_id = req.body.nextTaskId;
+      params.task_id = data.nextTaskId;
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
-          new ActviityTaskHist().complete(req.body.taskId).then(() => {
-            new Quote({}).update(req.body.quoteId, 3).then(() => {
-              if (req.body.nextTaskId) {
-                new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
-                  new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+          new ActviityTaskHist().complete(data.taskId).then(() => {
+            new Quote({}).update(data.quoteId, 3).then(() => {
+              if (data.nextTaskId) {
+                new ActviityTaskHist().update(data.nextTaskId).then(() => {
+                  new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
                     res.status(200).send({ tasks: tasks });
                   });
                 });
               } else {
-                new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
                   res.status(200).send({ tasks: tasks });
                 });
               }
@@ -61,20 +70,20 @@ const send = function (req, res, next) {
     });
   } else {
     new TaskEmail(params).add().then(() => {
-      params.task_id = req.body.nextTaskId;
+      params.task_id = data.nextTaskId;
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
-          new ActviityTaskHist().complete(req.body.taskId).then(() => {
-            new Quote({}).update(req.body.quoteId, 3).then(() => {
+          new ActviityTaskHist().complete(data.taskId).then(() => {
+            new Quote({}).update(data.quoteId, 3).then(() => {
 
-              if (req.body.nextTaskId) {
-                new ActviityTaskHist().update(req.body.nextTaskId).then(() => {
-                  new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+              if (data.nextTaskId) {
+                new ActviityTaskHist().update(data.nextTaskId).then(() => {
+                  new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
                     res.status(200).send({ tasks: tasks });
                   });
                 });
               } else {
-                new ActviityTaskHist({}).getByActivityId([{ id: req.body.userActivityId }]).then(function (tasks) {
+                new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
                   res.status(200).send({ tasks: tasks });
                 });
               }

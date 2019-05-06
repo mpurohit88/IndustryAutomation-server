@@ -156,7 +156,7 @@ img {
 /* PUT SASS VARIABLES HERE */
 
 ._1u4cTgknkzXxoTYpWb7R8s thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 
@@ -166,7 +166,7 @@ img {
 /* PUT SASS VARIABLES HERE */
 
 ._3Rp1K0z42fIsmtKV46bf8n thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 
@@ -176,7 +176,7 @@ img {
 /* PUT SASS VARIABLES HERE */
 
 .hU1Gxxx9ZRK8uzpaxzFBS thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 /* PUT SASS VARIABLES HERE */
@@ -215,7 +215,7 @@ table thead tr th {
 /* PUT SASS VARIABLES HERE */
 
 .ybBsRDpSk2N8KTXOFGQ60 thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 /* PUT SASS VARIABLES HERE */
@@ -334,7 +334,7 @@ p {
 --------------------------------------------- */
 
 header {
-  background: #e77e16;
+  background: linear-gradient(to bottom, #fec353 0%, #ef851c 100%);
   position: fixed;
   z-index: 3;
   width: 100%;
@@ -359,7 +359,7 @@ header a:hover {
 }
 
 .user {
-  background-color: #e77e16;
+  background-color: #ef851c;
   color: white;
 }
 
@@ -464,12 +464,12 @@ header a:hover {
 
 .nav-collapse a:hover,
 .nav-collapse .active a {
-  background: #e77e16;
+  background: #ef851c;
 }
 
 .nav-collapse a:active,
 .nav-collapse .active a {
-  background: #e77e16;
+  background: #ef851c;
 }
 
 body {
@@ -497,7 +497,7 @@ h6 {
   padding: 0px;
   list-style: none;
   background: #fff;
-  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 20px #f5c985;
   display: inline-block;
   border-radius: 50px;
   position: relative;
@@ -542,7 +542,7 @@ h6 {
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
   color: #ffffff;
-  background-color: #e77e16;
+  background-color: #ef851c;
   border-color: #dee2e6 #dee2e6 #fff;
 }
 
@@ -635,13 +635,13 @@ h6 {
 /* PUT SASS VARIABLES HERE */
 
 ._1ZC4zWJNldfOIxZgBOz5Ew thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 /* PUT SASS VARIABLES HERE */
 
 ._1jSEarS46I0w6bmlQ8VF7c thead {
-  background: #e77e16;
+  background: #ef851c;
   color: white;
 }
 /* PUT SASS VARIABLES HERE */

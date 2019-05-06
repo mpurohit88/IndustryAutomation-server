@@ -12,6 +12,7 @@ const Schedule = function (params) {
         this.to_address = params.to_address,
         this.cc_address = params.cc_address,
         this.bcc_address = params.bcc_address,
+        this.attachments = params.attachments,
         this.frequency = params.frequency,
         this.time = params.time,
         this.createdBy = params.createdBy,
@@ -29,10 +30,10 @@ Schedule.prototype.add = function () {
             }
 
             let values = [
-                [that.task_id, that.company_id, that.subject, that.next_reminder_date, that.message_body, that.from_address, that.to_address, that.cc_address, that.bcc_address, that.frequency, that.time, that.is_reminder, that.isActive, that.createdBy]
+                [that.task_id, that.company_id, that.subject, that.next_reminder_date, that.message_body, that.from_address, that.to_address, that.cc_address, that.bcc_address, that.attachments, that.frequency, that.time, that.is_reminder, that.isActive, that.createdBy]
             ]
 
-            connection.query("INSERT INTO schedule(task_id,company_id,subject,next_reminder_date,message_body,from_address,to_address,cc_address,bcc_address,frequency,time,is_reminder,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
+            connection.query("INSERT INTO schedule(task_id,company_id,subject,next_reminder_date,message_body,from_address,to_address,cc_address,bcc_address,attachment,frequency,time,is_reminder,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
                 if (!error) {
                     resolve(rows);
                 } else {
