@@ -1,6 +1,7 @@
 const connection = require("../lib/connection.js");
 const Customer = function (params) {
 	this.id = params.id;
+	this.companyId = params.companyId;
 	this.name = params.name;
 	this.address = params.address;
 	this.contact_person = params.contact_person;
@@ -20,10 +21,10 @@ Customer.prototype.add = function () {
 			}
 
 			let values = [
-				[that.name, that.address, that.tele, that.gstn, that.email, that.isActive, that.createdBy]
+				[that.name, that.companyId, that.address, that.tele, that.gstn, that.email, that.isActive, that.createdBy]
 			]
 
-			connection.query("INSERT INTO customer(name,address,telephone,gstn,email,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
+			connection.query("INSERT INTO customer(name,companyId,address,telephone,gstn,email,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
 				if (!error) {
 					resolve({ 'id': rows.insertId });
 				} else {

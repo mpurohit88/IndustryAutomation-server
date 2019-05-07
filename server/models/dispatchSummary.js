@@ -2,7 +2,7 @@ const connection = require("../lib/connection.js");
 let DispatchSummary = function (params) {
   this.task_id = params.task_id,
     this.quote_id = params.quote_id,
-    this.company_id = params.customer_id,
+    this.customer_id = params.customer_id,
     this.order_no = params.order_no,
     this.order_date = params.order_date,
     this.invoice_no = params.invoice_no,
@@ -22,7 +22,7 @@ DispatchSummary.prototype.add = function () {
       }
 
       let values = [
-        [that.task_id, that.company_id, that.quote_id, that.order_no, that.order_date, that.invoice_no, that.invoice_date, that.builty_no, that.up_to, that.isActive, that.createdBy]
+        [that.task_id, that.customer_id, that.quote_id, that.order_no, that.order_date, that.invoice_no, that.invoice_date, that.builty_no, that.up_to, that.isActive, that.createdBy]
       ]
 
       connection.query("INSERT INTO `dispatch_summary`(`task_id`, `customer_id`, `quote_id`, `order_no`, `order_date`, `invoice_no`, `invoice_date`, `builty_no`, `up_to`, `isActive`, `createdBy`) VALUES ?", [values], function (error, rows, fields) {

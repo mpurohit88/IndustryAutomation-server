@@ -9,6 +9,7 @@ const Schedule = require("../models/schedule")
 const create = function (req, res, next) {
 	let params = {
 		createdBy: req.decoded.id,
+		companyId: req.decoded.companyId,
 		id: req.body.quote.id,
 		party_name: req.body.quote.party_name,
 		contact_person: req.body.quote.contact_person,
@@ -143,7 +144,7 @@ const updateStatus = function (req, res, next) {
 
 		new Quote({}).update(req.body.quoteId, req.body.status).then(function () {
 
-			if(Number(status) > 99) {
+			if (Number(status) > 99) {
 				new Schedule({}).stopAll(req.body.quoteId)
 			}
 
@@ -167,7 +168,7 @@ const updateDispatchSummary = function (req, res, next) {
 		let params = {
 			createdBy: req.decoded.id,
 			task_id: req.body.acivityTaskId,
-			customer_id: req.body.companyId,
+			customer_id: req.body.customerId,
 			quote_id: req.body.quoteId,
 			order_no: req.body.data.order_no,
 			order_date: req.body.data.order_date,

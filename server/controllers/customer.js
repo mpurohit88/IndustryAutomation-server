@@ -4,6 +4,7 @@ const CustomerContact = require("../models/customerContact")
 const add = function (req, res, next) {
 	let params = {
 		createdBy: req.decoded.id,
+		companyId: req.decoded.companyId,
 		id: req.body.customer.id,
 		name: req.body.customer.name,
 		address: req.body.customer.address,

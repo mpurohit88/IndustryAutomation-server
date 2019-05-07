@@ -1,6 +1,7 @@
 const connection = require("../lib/connection.js");
 const Quote = function (params) {
   this.id = params.id;
+  this.companyId = params.companyId;
   this.party_name = params.party_name;
   this.address = params.address;
   this.currency_type = params.currency_type;
@@ -24,12 +25,10 @@ Quote.prototype.create = function () {
         }
 
         let values = [
-          [that.party_name, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.createdBy]
+          [that.party_name, that.companyId, that.address, that.currency_type, that.phoneNo, that.mobileNo, that.contact_person_id, that.status, that.isActive, that.createdBy]
         ]
 
-        console.log("Quote Data............", that);
-
-        connection.query('INSERT INTO quote(party_id,address,currency_type,phoneNo,mobileNo,contact_person_id,status,isActive,createdBy) VALUES ?', [values], function (error, rows, fields) {
+        connection.query('INSERT INTO quote(party_id,companyId,address,currency_type,phoneNo,mobileNo,contact_person_id,status,isActive,createdBy) VALUES ?', [values], function (error, rows, fields) {
 
           if (error) reject(error);
 
@@ -162,7 +161,7 @@ Quote.prototype.getQuoteDetail = function (userId, quoteId) {
 
       const isActive = 1;
 
-      connection.query('select q.id, c.name as companyName, c.id as companyId, q.contact_person_id, c.email, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name as userName from quote q inner join customer c on q.party_id = c.id inner join user as u on q.createdBy = u.id where q.isActive=? and q.id = ? order by q.id desc', [isActive, quoteId], function (error, rows, fields) {
+      connection.query('select q.id, q.companyId, c.name as companyName, c.id as customer_id, q.contact_person_id, c.email, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name as userName from quote q inner join customer c on q.party_id = c.id inner join user as u on q.createdBy = u.id where q.isActive=? and q.id = ? order by q.id desc', [isActive, quoteId], function (error, rows, fields) {
 
         if (!error) {
           resolve(rows);
