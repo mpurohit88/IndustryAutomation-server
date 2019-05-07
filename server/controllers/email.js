@@ -11,8 +11,7 @@ const Quote = require("../models/quote");
 const send = function (req, res, next) {
   const data = JSON.parse(req.body.data)
 
-  console.log("data*************", data)
-  let attachments = [];
+  let attachments = '';
 
   req.files.map((file) => {
     attachments = attachments === '' ? file.filename : (attachments + ',' + file.filename);
