@@ -10,7 +10,7 @@ const add = function (req, res, next) {
         task_id: req.body.taskId,
         company_id: req.decoded.companyId,
         subject: req.body.nextSchedule.subject,
-        message_body: req.body.nextSchedule.message_body,
+        message_body: '',
         next_reminder_date: req.body.nextSchedule.schedule_day,
         from_address: req.body.nextSchedule.companyEmailId,
         to_address: req.body.nextSchedule.to,
