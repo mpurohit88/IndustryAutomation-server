@@ -41,7 +41,7 @@ Reminder.prototype.AllReminders = function (from_date, to_date, userId, idAdmin)
 
         let updateParams = [];
 
-        reminders.map(row => {
+        (reminders || []).map(row => {
           row.is_new === 1 && updateParams.push(row.id);
         });
 
