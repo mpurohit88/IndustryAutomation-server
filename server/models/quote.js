@@ -39,10 +39,10 @@ Quote.prototype.create = function () {
             ];
 
             that.products.map((product) => {
-              productValues.push([quoteId, product.product_id, product.quantity, product.description, product.gstn, product.rate, that.isActive, that.createdBy])
+              productValues.push([quoteId, product.product_id, product.quantity, product.description, product.gstn, product.rate, product.unit, that.isActive, that.createdBy])
             });
 
-            connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
+            connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,unit,isActive,createdBy) VALUES ?', [productValues], function (error, productRows, fields) {
 
               if (!error) {
                 resolve({ 'quote_id': quoteId });
@@ -96,7 +96,7 @@ Quote.prototype.updateQuote = function () {
   });
 };
 
-Quote.prototype.all = function () {
+Quote.prototype.all = function (customerId, userId, statusId, from_date, to_date) {
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
       console.log('Process Started %d All', connection.threadId);
@@ -106,8 +106,37 @@ Quote.prototype.all = function () {
       }
 
       const isActive = 1;
+      let sql = 'select q.id, c.name as companyName, q.contact_person_id, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name from quote q inner join user u on u.id = q.createdBy inner join customer c on q.party_id = c.id where q.isActive=? '
+      let params = [isActive];
 
-      connection.query('select q.id, c.name as companyName, q.contact_person_id, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name from quote q inner join user u on u.id = q.createdBy inner join customer c on q.party_id = c.id where q.isActive=? order by q.id desc', [isActive], function (error, rows, fields) {
+      if (customerId) {
+        sql += ' and c.id = ?';
+        params.push(customerId);
+      }
+
+      if (userId) {
+        sql += ' and u.id = ?';
+        params.push(userId);
+      }
+
+      if (statusId) {
+        sql += ' and q.status = ?';
+        params.push(statusId);
+      }
+
+      if (from_date) {
+        sql += ' and q.dateTimeCreated >= ?';
+        params.push(from_date);
+      }
+
+      if (to_date) {
+        sql += ' and q.dateTimeCreated <= ?';
+        params.push(to_date);
+      }
+
+      sql += ' order by q.id desc LIMIT 400';
+
+      connection.query(sql, params, function (error, rows, fields) {
 
         if (!error) {
           resolve(rows);
@@ -123,7 +152,7 @@ Quote.prototype.all = function () {
   });
 }
 
-Quote.prototype.allByUserId = function (userId) {
+Quote.prototype.allByUserId = function (userId, customerId, statusId, from_date, to_date) {
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
       console.log('Process Started %d All', connection.threadId);
@@ -133,8 +162,32 @@ Quote.prototype.allByUserId = function (userId) {
       }
 
       const isActive = 1;
+      let sql = 'select q.id, c.name as companyName, q.contact_person_id, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, \'Self\' as name from quote q inner join customer c on q.party_id = c.id where q.isActive=? and q.createdBy=? ';
+      let params = [isActive, userId];
 
-      connection.query('select q.id, c.name as companyName, q.contact_person_id, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, \'Self\' as name from quote q inner join customer c on q.party_id = c.id where q.isActive=? and q.createdBy=? order by q.id desc', [isActive, userId], function (error, rows, fields) {
+      if (customerId) {
+        sql += ' and c.id = ?';
+        params.push(customerId);
+      }
+
+      if (statusId) {
+        sql += ' and q.status = ?';
+        params.push(statusId);
+      }
+
+      if (from_date) {
+        sql += ' and q.dateTimeCreated >= ?';
+        params.push(from_date);
+      }
+
+      if (to_date) {
+        sql += ' and q.dateTimeCreated <= ?';
+        params.push(to_date);
+      }
+
+      sql += ' order by q.id desc LIMIT 400';
+
+      connection.query(sql, params, function (error, rows, fields) {
 
         if (!error) {
           resolve(rows);
@@ -161,7 +214,7 @@ Quote.prototype.getQuoteDetail = function (userId, quoteId) {
 
       const isActive = 1;
 
-      connection.query('select q.id, q.companyId, c.name as companyName, c.id as customer_id, q.contact_person_id, c.email, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name as userName from quote q inner join customer c on q.party_id = c.id inner join user as u on q.createdBy = u.id where q.isActive=? and q.id = ? order by q.id desc', [isActive, quoteId], function (error, rows, fields) {
+      connection.query('select q.id, q.companyId, c.name as companyName, c.id as customer_id, q.contact_person_id, c.email, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, u.name as userName, u.email as userEmail from quote q inner join customer c on q.party_id = c.id inner join user as u on q.createdBy = u.id where q.isActive=? and q.id = ? order by q.id desc', [isActive, quoteId], function (error, rows, fields) {
 
         if (!error) {
           resolve(rows);

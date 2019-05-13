@@ -91,4 +91,15 @@ const quoteContactDetail = function (req, res, next) {
 	}
 }
 
-module.exports = { add: add, all: all, contactList: contactList, quoteContactDetail: quoteContactDetail };
+const getUniqueNames = function (req, res, next) {
+	try {
+		new Customer({}).getUniqueNames().then(function (customerList) {
+			res.send(customerList);
+		});
+
+	} catch (err) {
+		console.log("Error: ", err);
+	}
+}
+
+module.exports = { add: add, all: all, contactList: contactList, quoteContactDetail: quoteContactDetail, getUniqueNames: getUniqueNames };

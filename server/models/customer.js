@@ -155,4 +155,29 @@ Customer.prototype.all = function () {
 	});
 };
 
+Customer.prototype.getUniqueNames = function () {
+	return new Promise(function (resolve, reject) {
+		connection.getConnection(function (error, connection) {
+			if (error) {
+				throw error;
+			}
+
+			const isActive = 1;
+
+			connection.query('select id as value, name as text from customer where isActive=? order by name', [isActive], function (error, rows, fields) {
+
+				if (!error) {
+					resolve(rows);
+				} else {
+					console.log("Error...", error);
+					reject(error);
+				}
+
+				connection.release();
+				console.log('Process Complete %d', connection.threadId);
+			});
+		});
+	});
+};
+
 module.exports = Customer;

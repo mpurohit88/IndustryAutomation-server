@@ -114,4 +114,32 @@ User.prototype.all = function () {
   });
 }
 
+
+User.prototype.getUniqueNames = function () {
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      console.log('Process Started %d All', connection.threadId);
+
+      if (error) {
+        throw error;
+      }
+
+      const isActive = 1;
+
+      connection.query('select u.id as value, u.name as text from user u where u.isActive=? and u.companyId is not null order by u.name', [isActive], function (error, rows, fields) {
+
+        if (!error) {
+          resolve(rows);
+        } else {
+          console.log("Error...", error);
+          reject(error);
+        }
+
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+      });
+    });
+  });
+}
+
 module.exports = User;

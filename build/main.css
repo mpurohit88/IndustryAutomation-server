@@ -105,6 +105,13 @@
 ._3rTSaKIc7XWp_e4qjWo-At .dialog-content {
   padding: 0px;
 }
+
+@media (min-width: 576px) {
+  #CreateQuote {
+    max-width: 1060px;
+    margin: 1.75rem auto;
+  }
+}
 /* PUT SASS VARIABLES HERE */
 
 ._10wIHsY8kNs8ckEAGC1jS9 button {
@@ -665,9 +672,19 @@ h6 {
   background: #ef851c;
   color: white;
 }
+
+._1ZC4zWJNldfOIxZgBOz5Ew #filter {
+  font-weight: 600;
+}
 /* PUT SASS VARIABLES HERE */
 
 ._1jSEarS46I0w6bmlQ8VF7c thead {
+  background: #ef851c;
+  color: white;
+}
+/* PUT SASS VARIABLES HERE */
+
+._19_I27MvbXdXCiwN2CoRdW thead {
   background: #ef851c;
   color: white;
 }
@@ -1272,7 +1289,7 @@ strong {
 
 .head {
   padding: 15px;
-  background-color: #3c9aae;
+  background-color: #fbb749;
   color: white;
 }
 
@@ -1373,4 +1390,8 @@ div.checkmark .disabled-circle:before {
 
 .float-right {
   float: right;
+}
+
+#steps > div.active-step:hover {
+  box-shadow: 0px 5px 25px rgba(29, 34, 47, 0.15);
 }

@@ -47,7 +47,6 @@ const register = function (req, res, next) {
 	}
 };
 
-
 const all = function (req, res, next) {
 	try {
 		if (req.decoded.role === 'admin') {
@@ -62,4 +61,18 @@ const all = function (req, res, next) {
 	}
 }
 
-module.exports = { register: register, all: all };
+const getUniqueNames = function (req, res, next) {
+	try {
+		if (req.decoded.role === 'admin') {
+			new User({}).getUniqueNames().then(function (userList) {
+				res.send({ userList: userList });
+			});
+		} else {
+			res.send([]);
+		}
+	} catch (err) {
+		console.log("Error: ", err);
+	}
+}
+
+module.exports = { register: register, all: all, getUniqueNames: getUniqueNames };

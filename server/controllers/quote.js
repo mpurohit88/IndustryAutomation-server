@@ -74,14 +74,21 @@ const create = function (req, res, next) {
 	}
 };
 
+// Seperate code written for admin and other user.
 const all = function (req, res, next) {
 	try {
+		const customerId = req.query.customerId;
+		const userId = req.query.userId;
+		const statusId = req.query.statusId;
+		const from_date = req.query.from_date;
+		const to_date = req.query.to_date;
+
 		if (req.decoded.role === 'admin') {
-			new Quote({}).all().then(function (quoteList) {
+			new Quote({}).all(customerId, userId, statusId, from_date, to_date).then(function (quoteList) {
 				res.send(quoteList);
 			});
 		} else {
-			new Quote({}).allByUserId(req.decoded.id).then(function (quoteList) {
+			new Quote({}).allByUserId(req.decoded.id, customerId, statusId, from_date, to_date).then(function (quoteList) {
 				res.send(quoteList);
 			});
 		}
