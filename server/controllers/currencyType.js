@@ -1,4 +1,4 @@
-const CurrencyType = require("../models/currencyType.js")
+const CurrencyType = require("../models/CurrencyType.js")
 
 const all = function (req, res, next) {
   try {
