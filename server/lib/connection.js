@@ -10,11 +10,10 @@ if (process.env.NODE_ENV === 'development') {
    };
 } else {
    dbOptions = {
-      host: 'remotemysql.com',
-      user: 'UN1KAud19y',
-      password: 'iDMPYL3oNy',
-      database: 'UN1KAud19y',
-      port: 3306
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      database: 'work_management'
    };
 }
 
