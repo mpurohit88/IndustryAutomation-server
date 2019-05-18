@@ -676,6 +676,15 @@ h6 {
 ._1ZC4zWJNldfOIxZgBOz5Ew #filter {
   font-weight: 600;
 }
+
+#popover-basic > div.popover-body > table > tbody > tr > td {
+  border: 1px solid gray;
+  padding: 5px;
+}
+
+#popover-basic {
+  max-width: 500px !important;
+}
 /* PUT SASS VARIABLES HERE */
 
 ._1jSEarS46I0w6bmlQ8VF7c thead {
