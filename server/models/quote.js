@@ -155,11 +155,12 @@ Quote.prototype.all = function (customerId, userId, statusId, from_date, to_date
 Quote.prototype.allByUserId = function (userId, customerId, statusId, from_date, to_date) {
   return new Promise(function (resolve, reject) {
     connection.getConnection(function (error, connection) {
-      console.log('Process Started %d All', connection.threadId);
 
       if (error) {
         throw error;
       }
+
+      console.log('Process Started %d All', connection.threadId);
 
       const isActive = 1;
       let sql = 'select q.id, c.name as companyName, q.contact_person_id, q.address, q.currency_type, q.phoneNo, q.mobileNo, q.status, q.dateTimeCreated, \'Self\' as name from quote q inner join customer c on q.party_id = c.id where q.isActive=? and q.createdBy=? ';

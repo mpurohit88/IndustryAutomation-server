@@ -52,7 +52,7 @@ ActivityTaskHist.prototype.getByActivityId = function (userActivityIds) {
         ids.push(row.id);
       })
 
-      connection.query('select at.id, at.userActivityId, at.taskId, t.text, at.startDate, at.endDate, at.sortOrder, s.id as scheduleId from activity_task_hist as at inner join task t on at.taskId = t.id left join schedule as s on at.id = s.task_id where userActivityId in (?) order by at.sortOrder asc', [ids], function (error, rows, fields) {
+      connection.query('select at.id, at.userActivityId, at.taskId, t.text, at.startDate, at.endDate, at.sortOrder, s.max_id as scheduleId from activity_task_hist as at inner join task t on at.taskId = t.id left join ( SELECT MAX(id) max_id, task_id FROM schedule GROUP BY task_id ) as s on at.id = s.task_id where userActivityId in (?) order by at.sortOrder asc', [ids], function (error, rows, fields) {
 
         if (!error) {
           resolve(rows);

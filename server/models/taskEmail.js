@@ -46,7 +46,7 @@ TaskEmail.prototype.getEmailBody = function (task_id) {
                 throw error;
             }
 
-            connection.query('select te.body, s.subject, s.to_address, s.from_address, s.cc_address, s.bcc_address from task_email te inner join schedule s on te.task_id = s.task_id where te.isActive=1 and te.task_id=? order by te.dateTimeCreated desc LIMIT 1;', [task_id], function (error, rows, fields) {
+            connection.query('select te.body, s.subject, s.to_address, s.from_address, s.cc_address, s.bcc_address from task_email te inner join schedule s on te.task_id = s.task_id where te.isActive=1 and te.task_id=? order by s.dateTimeCreated desc LIMIT 1;', [task_id], function (error, rows, fields) {
 
                 if (!error) {
                     resolve(rows);

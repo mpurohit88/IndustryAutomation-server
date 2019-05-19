@@ -29,6 +29,9 @@ const register = function (req, res, next) {
 				} else {
 					res.send([]);
 				}
+			}).catch((err) => {
+				res.status(500);
+				res.render('error', { error: err });
 			});
 		} else {
 			newUser.register().then(function (result) {
@@ -39,11 +42,16 @@ const register = function (req, res, next) {
 				} else {
 					res.send([]);
 				}
-			});
+			}).catch((err) => {
+				res.status(500);
+				res.send('error', { error: err });
+			});;
 		}
-
 	} catch (err) {
 		console.log("Error: ", err);
+
+		res.status(500)
+		res.send('error', { error: err })
 	}
 };
 

@@ -41,17 +41,19 @@ User.prototype.register = function (newUser) {
             resolve({ userName: that.name, userId: that.userId, password: that.password });
           } else {
             console.log("Error...", error);
-            reject(error)
+            reject(error);
           }
         });
       } else {
         console.log("Error...", error);
-        reject(error)
+        reject(error);
       }
 
       connection.release();
       console.log('Process Complete %d', connection.threadId);
     });
+  }).catch((error) => {
+    reject(error);
   });
   // });
 };

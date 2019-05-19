@@ -13,7 +13,6 @@ QuoteProduct.prototype.getByQuoteId = function (quoteId) {
 			}
 
 			connection.query('select qp.product_id, p.name, q.currency_type, qp.description, qp.unit, qp.quantity, qp.gstn, qp.rate, p.hsnCode, p.imgName from quote_product qp inner join product p on qp.product_id = p.id inner join quote q on qp.quote_id = q.id where qp.quote_id = ? order by qp.id asc', [quoteId], function (error, rows, fields) {
-
 				if (!error) {
 					resolve(rows);
 				} else {
@@ -62,10 +61,10 @@ QuoteProduct.prototype.add = function (id, products, createdBy) {
 			];
 
 			products.map((data) => {
-				productValues.push([id, data.product_id, data.quantity, data.description, data.gstn, data.rate, 1, createdBy])
+				productValues.push([id, data.product_id, data.quantity, data.description, data.gstn, data.rate, data.unit, 1, createdBy])
 			});
 
-			connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,isActive,createdBy) VALUES ?', [productValues], function (error, rows, fields) {
+			connection.query('INSERT INTO quote_product(quote_id,product_id,quantity,description,gstn,rate,unit,isActive,createdBy) VALUES ?', [productValues], function (error, rows, fields) {
 				if (!error) {
 					resolve(rows);
 				} else {
