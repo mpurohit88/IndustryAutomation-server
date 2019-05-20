@@ -1,9 +1,0 @@
-{
-  "name": "Demo Application",
-  "short_name": "YourAppName",
-  "orientation": "portrait",
-  "display": "standalone",
-  "start_url": ".",
-  "description": "Description of your app",
-  "background_color": "#ffffff"
-}
