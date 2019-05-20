@@ -93,23 +93,23 @@ const send = function (req, res, next) {
       params.task_id = data.nextTaskId;
       new TaskEmail(params).add().then(() => {
         newSchedule.add().then(function (result) {
-          new ActviityTaskHist().complete(data.taskId).then(() => {
-            new Quote({}).update(data.quoteId, 3).then(() => {
+          // new ActviityTaskHist().complete(data.taskId).then(() => {
+          new Quote({}).update(data.quoteId, 3).then(() => {
 
-              if (data.nextTaskId) {
-                // new ActviityTaskHist().update(data.nextTaskId).then(() => {
-                new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
-                  res.status(200).send({ tasks: tasks });
-                });
-                // });
-              } else {
-                new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
-                  res.status(200).send({ tasks: tasks });
-                });
-              }
-            });
+            if (data.nextTaskId) {
+              // new ActviityTaskHist().update(data.nextTaskId).then(() => {
+              new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
+                res.status(200).send({ tasks: tasks });
+              });
+              // });
+            } else {
+              new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
+                res.status(200).send({ tasks: tasks });
+              });
+            }
           });
         });
+        // });
       });
     });
   }
