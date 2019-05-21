@@ -96,7 +96,7 @@ const all = function (req, res, next) {
 const getQuoteDetail = function (req, res, next) {
 	try {
 		if (req.decoded.role === 'admin') {
-			getQuoteDetailsFun(res, {id: req.decoded.id, quoteId: req.query.quoteId});
+			getQuoteDetailsFun(res, {id: undefined, quoteId: req.query.quoteId});
 		} else {
 			getQuoteDetailsFun(res, {id: req.decoded.id, quoteId: req.query.quoteId});
 		}
