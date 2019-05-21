@@ -31,13 +31,9 @@ const create = function (req, res, next) {
 					new QuoteProduct({}).add(params.id, params.products, params.createdBy).then(function () {
 
 						if (req.decoded.role === 'admin') {
-							new Quote({}).all().then(function (quoteList) {
-								res.send(quoteList);
-							});
+							getQuoteDetailsFun(res, {id: params.createdBy, quoteId: params.id});
 						} else {
-							new Quote({}).allByUserId(req.decoded.id).then(function (quoteList) {
-								res.send(quoteList);
-							});
+							getQuoteDetailsFun(res, {id: params.createdBy, quoteId: params.id});
 						}
 
 					});
@@ -100,29 +96,26 @@ const all = function (req, res, next) {
 const getQuoteDetail = function (req, res, next) {
 	try {
 		if (req.decoded.role === 'admin') {
-			new Quote({}).getQuoteDetail(req.decoded.id, req.query.quoteId).then(function (quoteList) {
-				new UserActivity({}).getUserActivityId(undefined, req.query.quoteId).then(function (userActivityId) {
-					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
-						new QuoteProduct({}).getByQuoteId(req.query.quoteId).then(function (products) {
-							res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
-						})
-					});
-				});
-			});
+			getQuoteDetailsFun(res, {id: req.decoded.id, quoteId: req.query.quoteId});
 		} else {
-			new Quote({}).getQuoteDetail(req.decoded.id, req.query.quoteId).then(function (quoteList) {
-				new UserActivity({}).getUserActivityId(req.decoded.id, req.query.quoteId).then(function (userActivityId) {
-					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
-						new QuoteProduct({}).getByQuoteId(req.query.quoteId).then(function (products) {
-							res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
-						})
-					});
-				});
-			});
+			getQuoteDetailsFun(res, {id: req.decoded.id, quoteId: req.query.quoteId});
 		}
 	} catch (err) {
 		console.log("Error: ", err);
 	}
+}
+
+const getQuoteDetailsFun = function(res, data) {
+	console.log("**************", data);
+	new Quote({}).getQuoteDetail(data.id, data.quoteId).then(function (quoteList) {
+		new UserActivity({}).getUserActivityId(data.id, data.quoteId).then(function (userActivityId) {
+			new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+				new QuoteProduct({}).getByQuoteId(data.quoteId).then(function (products) {
+					res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+				})
+			});
+		});
+	});
 }
 
 const start = function (req, res, next) {
