@@ -93,7 +93,13 @@ const quoteContactDetail = function (req, res, next) {
 
 const getUniqueNames = function (req, res, next) {
 	try {
-		new Customer({}).getUniqueNames().then(function (customerList) {
+		let companyId = undefined;
+
+		if (!req.decoded.role === 'admin') {
+			companyId = req.decoded.companyId;
+		}
+
+		new Customer({}).getUniqueNames(companyId).then(function (customerList) {
 			res.send(customerList);
 		});
 

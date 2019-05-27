@@ -155,7 +155,7 @@ Customer.prototype.all = function () {
 	});
 };
 
-Customer.prototype.getUniqueNames = function () {
+Customer.prototype.getUniqueNames = function (companyId) {
 	return new Promise(function (resolve, reject) {
 		connection.getConnection(function (error, connection) {
 			if (error) {
@@ -163,8 +163,17 @@ Customer.prototype.getUniqueNames = function () {
 			}
 
 			const isActive = 1;
+			let sql = 'select id as value, name as text from customer where isActive=? order by name '
+			let params = [isActive];
 
-			connection.query('select id as value, name as text from customer where isActive=? order by name', [isActive], function (error, rows, fields) {
+			if (companyId) {
+				sql += ' and companyId = ?';
+				params.push(customerId);
+			}
+
+			sql += ' order by name';
+
+			connection.query(sql, params, function (error, rows, fields) {
 
 				if (!error) {
 					resolve(rows);
