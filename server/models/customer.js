@@ -168,7 +168,7 @@ Customer.prototype.getUniqueNames = function (companyId) {
 
 			if (companyId) {
 				sql += ' and companyId = ?';
-				params.push(customerId);
+				params.push(companyId);
 			}
 
 			sql += ' order by name';

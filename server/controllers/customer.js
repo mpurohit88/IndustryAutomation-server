@@ -95,7 +95,7 @@ const getUniqueNames = function (req, res, next) {
 	try {
 		let companyId = undefined;
 
-		if (!req.decoded.role === 'admin') {
+		if (req.decoded.role === 'user') {
 			companyId = req.decoded.companyId;
 		}
 

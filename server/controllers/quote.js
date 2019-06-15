@@ -5,6 +5,8 @@ const ActviityTaskHist = require("../models/activityTaskHist")
 const QuoteProduct = require("../models/quoteProduct")
 const DispatchSummary = require("../models/dispatchSummary")
 const Schedule = require("../models/schedule")
+const TaskEmail = require("../models/taskEmail");
+const DispatchProduct = require("../models/dispatchProduct");
 
 const create = function (req, res, next) {
 	let params = {
@@ -31,9 +33,9 @@ const create = function (req, res, next) {
 					new QuoteProduct({}).add(params.id, params.products, params.createdBy).then(function () {
 
 						if (req.decoded.role === 'admin') {
-							getQuoteDetailsFun(res, {id: params.createdBy, quoteId: params.id});
+							getQuoteDetailsFun(res, { id: params.createdBy, quoteId: params.id });
 						} else {
-							getQuoteDetailsFun(res, {id: params.createdBy, quoteId: params.id});
+							getQuoteDetailsFun(res, { id: params.createdBy, quoteId: params.id });
 						}
 
 					});
@@ -96,16 +98,16 @@ const all = function (req, res, next) {
 const getQuoteDetail = function (req, res, next) {
 	try {
 		if (req.decoded.role === 'admin') {
-			getQuoteDetailsFun(res, {id: undefined, quoteId: req.query.quoteId});
+			getQuoteDetailsFun(res, { id: undefined, quoteId: req.query.quoteId });
 		} else {
-			getQuoteDetailsFun(res, {id: req.decoded.id, quoteId: req.query.quoteId});
+			getQuoteDetailsFun(res, { id: req.decoded.id, quoteId: req.query.quoteId });
 		}
 	} catch (err) {
 		console.log("Error: ", err);
 	}
 }
 
-const getQuoteDetailsFun = function(res, data) {
+const getQuoteDetailsFun = function (res, data) {
 	console.log("**************", data);
 	new Quote({}).getQuoteDetail(data.id, data.quoteId).then(function (quoteList) {
 		new UserActivity({}).getUserActivityId(data.id, data.quoteId).then(function (userActivityId) {
@@ -165,26 +167,71 @@ const updateStatus = function (req, res, next) {
 
 const updateDispatchSummary = function (req, res, next) {
 	try {
+
+		console.log("req.body...............", req.body);
+
 		let params = {
 			createdBy: req.decoded.id,
+			company_id: req.decoded.companyId,
 			task_id: req.body.acivityTaskId,
 			customer_id: req.body.customerId,
 			quote_id: req.body.quoteId,
+			from: req.body.data.companyEmailId,
+			to: req.body.data.to,
+			cc: req.body.data.cc,
+			bcc: req.body.data.bcc,
 			order_no: req.body.data.order_no,
-			order_date: req.body.data.order_date,
 			invoice_no: req.body.data.invoice_no,
 			invoice_date: req.body.data.invoice_date,
-			builty_no: req.body.data.builty_no,
-			up_to: req.body.data.up_to
+			transporter_name: req.body.data.transporter_name,
+			bilty_no: req.body.data.bilty_no,
+			up_to: req.body.data.up_to,
+			amount: req.body.data.amount
 		};
 
-		new DispatchSummary(params).add().then(() => {
-			new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
-				new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
-					new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
-						new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
-							res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
-						})
+		let taskParams = {
+			createdBy: req.decoded.id,
+			task_id: req.body.acivityTaskId,
+			subject: 'Dispatch Details of Material',
+			body: req.body.body,
+			quoteId: req.body.quoteId
+		};
+
+		const params1 = {
+			createdBy: params.createdBy,
+			scheduleId: undefined,
+			task_id: params.task_id,
+			company_id: req.decoded.companyId,
+			subject: 'Dispatch Details of Material',
+			message_body: '',
+			next_reminder_date: new Date(),
+			from_address: params.from,
+			to_address: params.to,
+			cc_address: params.cc || '',
+			bcc_address: params.bcc || '',
+			attachments: '',
+			is_reminder: false,
+			frequency: 0,
+			time: 0
+		};
+
+		const newSchedule = new Schedule(params1);
+
+		new DispatchSummary(params).add().then((result) => {
+			new DispatchProduct({}).add(result, req.body.products).then(() => {
+				new TaskEmail(params).InactivateEmail(params1.task_id, req.body.nextTaskId).then(() => {
+					new TaskEmail(taskParams).add().then(() => {
+						// newSchedule.add().then(function (result) {
+							new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
+								new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
+									new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+										new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
+											res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+										});
+									});
+								});
+							});
+						// });
 					});
 				});
 			});
