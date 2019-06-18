@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
    dbOptions = {
       host: 'localhost',
       user: 'root',
-      password: 'root',
+      password: '',
       database: 'work_management'
    };
 }

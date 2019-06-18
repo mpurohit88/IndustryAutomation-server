@@ -2,7 +2,7 @@ var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 
 var mailAccountUser = 'mpurohit88@gmail.com'
-var mailAccountPassword = ''
+var mailAccountPassword = 'Compozed@123#'
 
 var transport = nodemailer.createTransport(smtpTransport({
   service: 'gmail',

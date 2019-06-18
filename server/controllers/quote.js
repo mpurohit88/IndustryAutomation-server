@@ -7,6 +7,7 @@ const DispatchSummary = require("../models/dispatchSummary")
 const Schedule = require("../models/schedule")
 const TaskEmail = require("../models/taskEmail");
 const DispatchProduct = require("../models/dispatchProduct");
+const Document = require("../models/document");
 
 const create = function (req, res, next) {
 	let params = {
@@ -222,15 +223,15 @@ const updateDispatchSummary = function (req, res, next) {
 				new TaskEmail(params).InactivateEmail(params1.task_id, req.body.nextTaskId).then(() => {
 					new TaskEmail(taskParams).add().then(() => {
 						// newSchedule.add().then(function (result) {
-							new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
-								new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
-									new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
-										new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
-											res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
-										});
+						new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
+							new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
+								new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+									new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
+										res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
 									});
 								});
 							});
+						});
 						// });
 					});
 				});
@@ -241,4 +242,38 @@ const updateDispatchSummary = function (req, res, next) {
 	}
 }
 
-module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus, updateDispatchSummary: updateDispatchSummary };
+const orderConfirmation = function (req, res, next) {
+	const data = JSON.parse(req.body.data)
+	const imgName = req.file ? req.file.filename : '';
+
+	let status = data.status || 5;
+	const docParam = {
+		createdBy: req.decoded.id,
+		company_id: req.decoded.companyId,
+		id: data.id,
+		task_id: data.taskId,
+		name: imgName,
+		isActive: 1
+	}
+
+	new Document(docParam).add().then(() => {
+		new ActviityTaskHist().complete(data.taskId).then(() => {
+			new Quote({}).update(data.quoteId, status).then(() => {
+
+				if (data.nextTaskid) {
+					new ActviityTaskHist().update(data.nextTaskid).then(() => {
+						new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
+							res.status(200).send({ tasks: tasks });
+						});
+					});
+				} else {
+					new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
+						res.status(200).send({ tasks: tasks });
+					});
+				}
+			});
+		});
+	});
+}
+
+module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus, updateDispatchSummary: updateDispatchSummary, orderConfirmation: orderConfirmation };

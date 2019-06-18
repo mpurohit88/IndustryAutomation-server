@@ -45,7 +45,7 @@ const send = function (req, res, next) {
 
   const newSchedule = new Schedule(params1);
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'production') {
     const mail = {
       from: data.from,
       to: data.to,
@@ -101,7 +101,24 @@ const send = function (req, res, next) {
                 if (data.nextTaskId) {
                   // new ActviityTaskHist().update(data.nextTaskId).then(() => {
                   new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
-                    res.status(200).send({ tasks: tasks });
+                    const mail = {
+                      from: data.from,
+                      to: data.to,
+                      subject: data.subject,
+                      html: data.body
+                    }
+
+                    serverTrans.use('compile', inlineBase64({ cidPrefix: 'EmbeddedContent_' }));
+                    serverTrans.sendMail(mail, (err, info) => {
+                      if (err) {
+                        console.log(err);
+                        res.status(200).send({ msg: "fail" });
+                      } else {
+                        new ActviityTaskHist({}).getByActivityId([{ id: data.userActivityId }]).then(function (tasks) {
+                          res.status(200).send({ tasks: tasks });
+                        });
+                      }
+                    });
                   });
                   // });
                 } else {
