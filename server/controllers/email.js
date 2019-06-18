@@ -39,6 +39,7 @@ const send = function (req, res, next) {
     bcc_address: data.bcc || '',
     attachments: attachments,
     is_reminder: false,
+    is_payment_reminder: false,
     frequency: 0,
     time: 0
   };

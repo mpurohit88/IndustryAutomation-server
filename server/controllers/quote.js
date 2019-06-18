@@ -169,8 +169,6 @@ const updateStatus = function (req, res, next) {
 const updateDispatchSummary = function (req, res, next) {
 	try {
 
-		console.log("req.body...............", req.body);
-
 		let params = {
 			createdBy: req.decoded.id,
 			company_id: req.decoded.companyId,
@@ -212,6 +210,7 @@ const updateDispatchSummary = function (req, res, next) {
 			bcc_address: params.bcc || '',
 			attachments: '',
 			is_reminder: false,
+			is_payment_reminder: false,
 			frequency: 0,
 			time: 0
 		};
@@ -222,17 +221,17 @@ const updateDispatchSummary = function (req, res, next) {
 			new DispatchProduct({}).add(result, req.body.products).then(() => {
 				new TaskEmail(params).InactivateEmail(params1.task_id, req.body.nextTaskId).then(() => {
 					new TaskEmail(taskParams).add().then(() => {
-						// newSchedule.add().then(function (result) {
-						new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
-							new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
-								new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
-									new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
-										res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+						newSchedule.add().then(function (result) {
+							new Quote({}).getQuoteDetail(req.decoded.id, req.body.quoteId).then(function (quoteList) {
+								new UserActivity({}).getUserActivityId(req.decoded.id, req.body.quoteId).then(function (userActivityId) {
+									new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+										new QuoteProduct({}).getByQuoteId(req.body.quoteId).then(function (products) {
+											res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+										});
 									});
 								});
 							});
 						});
-						// });
 					});
 				});
 			});
@@ -276,4 +275,66 @@ const orderConfirmation = function (req, res, next) {
 	});
 }
 
-module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus, updateDispatchSummary: updateDispatchSummary, orderConfirmation: orderConfirmation };
+const getDispatchSummary = function (req, res, next) {
+	new DispatchSummary({}).getByQuoteId(req.query.quote_id).then(function (result) {
+		res.status(200).send({ dispatchSummary: result });
+	});
+}
+
+const sendPaymentReminder = function (req, res, next) {
+	try {
+		const body = req.body;
+
+		console.log("body*************", body);
+
+		const taskParams = {
+			createdBy: req.decoded.id,
+			task_id: body.acivityTaskId,
+			subject: 'Reminder to Release Outstanding Payment',
+			body: body.body,
+			quoteId: body.quoteId
+		};
+
+		const params1 = {
+			createdBy: req.decoded.id,
+			scheduleId: undefined,
+			task_id: body.acivityTaskId,
+			company_id: req.decoded.companyId,
+			subject: 'Reminder to Release Outstanding Payment',
+			message_body: '',
+			next_reminder_date: new Date(),
+			from_address: body.data.companyEmailId,
+			to_address: body.data.to,
+			cc_address: body.data.cc || '',
+			bcc_address: body.data.bcc || '',
+			attachments: '',
+			is_reminder: false,
+			is_payment_reminder: false,
+			frequency: 0,
+			time: 0
+		};
+
+		const newSchedule = new Schedule(params1);
+
+		new TaskEmail(taskParams).add().then(() => {
+			taskParams.task_id = body.nextActivityTaskId;
+			new TaskEmail(taskParams).add().then(() => {
+				newSchedule.add().then(function (result) {
+					new Quote({}).getQuoteDetail(req.decoded.id, body.quoteId).then(function (quoteList) {
+						new UserActivity({}).getUserActivityId(req.decoded.id, body.quoteId).then(function (userActivityId) {
+							new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
+								new QuoteProduct({}).getByQuoteId(body.quoteId).then(function (products) {
+									res.send({ quoteDetails: quoteList[0], tasks: tasks, products: products });
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+	} catch (err) {
+		console.log("Error: ", err);
+	}
+}
+
+module.exports = { create: create, all: all, getQuoteDetail: getQuoteDetail, start: start, updateStatus: updateStatus, updateDispatchSummary: updateDispatchSummary, orderConfirmation: orderConfirmation, getDispatchSummary: getDispatchSummary, sendPaymentReminder: sendPaymentReminder };

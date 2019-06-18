@@ -43,4 +43,29 @@ DispatchSummary.prototype.add = function () {
   });
 };
 
+DispatchSummary.prototype.getByQuoteId = function (quote_id) {
+  const self = this;
+
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+
+      connection.query('select `task_id`, `company_id`, `customer_id`, `quote_id`, `order_no`, `invoice_no`, `invoice_date`, `transporter_name`, `bilty_no`, `up_to`, `amount`, ds.`isActive`, `createdBy` from dispatch_summary as ds where ds.isActive=? and quote_id=?', [self.isActive, quote_id], function (error, rows, fields) {
+
+        if (!error) {
+          resolve(rows);
+        } else {
+          console.log("Error...", error);
+          reject(error);
+        }
+
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+      });
+    });
+  });
+}
+
 module.exports = DispatchSummary;

@@ -28,5 +28,7 @@ quoteRouter.route("/getQuoteDetail").get(validateToken, Quote.getQuoteDetail);
 quoteRouter.route("/updateStatus").post(validateToken, Quote.updateStatus);
 quoteRouter.route("/updateDispatchSummary").post(validateToken, Quote.updateDispatchSummary);
 quoteRouter.route("/uploadDocument").post(validateToken, upload.single('avatar'), Quote.orderConfirmation);
+quoteRouter.route("/getDispatchSummary").get(validateToken, Quote.getDispatchSummary);
+quoteRouter.route("/sendPaymentReminder").post(validateToken, Quote.sendPaymentReminder);
 
 module.exports = quoteRouter;

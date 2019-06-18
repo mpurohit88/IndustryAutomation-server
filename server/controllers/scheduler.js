@@ -3,7 +3,6 @@ const ActviityTaskHist = require("../models/activityTaskHist");
 const Quote = require("../models/quote")
 
 const add = function (req, res, next) {
-
     const params = {
         createdBy: req.decoded.id,
         scheduleId: req.body.nextSchedule.scheduleId,
@@ -18,7 +17,8 @@ const add = function (req, res, next) {
         bcc_address: req.body.nextSchedule.bcc || '',
         frequency: req.body.nextSchedule.schedule_time,
         time: req.body.nextSchedule.schedule_time,
-        is_reminder: true
+        is_reminder: req.body.is_quote_reminder,
+        is_payment_reminder: req.body.is_payment_reminder
     };
 
     const newSchedule = new Schedule(params);

@@ -17,6 +17,7 @@ const Schedule = function (params) {
         this.time = params.time,
         this.createdBy = params.createdBy,
         this.is_reminder = params.is_reminder,
+        this.is_payment_reminder = params.is_payment_reminder,
         this.isActive = 1
 };
 
@@ -30,10 +31,10 @@ Schedule.prototype.add = function () {
             }
 
             let values = [
-                [that.task_id, that.company_id, that.subject, that.next_reminder_date, that.message_body, that.from_address, that.to_address, that.cc_address, that.bcc_address, that.attachments, that.frequency, that.time, that.is_reminder, that.isActive, that.createdBy]
+                [that.task_id, that.company_id, that.subject, that.next_reminder_date, that.message_body, that.from_address, that.to_address, that.cc_address, that.bcc_address, that.attachments, that.frequency, that.time, that.is_reminder, that.is_payment_reminder, that.isActive, that.createdBy]
             ]
 
-            connection.query("INSERT INTO schedule(task_id,company_id,subject,next_reminder_date,message_body,from_address,to_address,cc_address,bcc_address,attachment,frequency,time,is_reminder,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
+            connection.query("INSERT INTO schedule(task_id,company_id,subject,next_reminder_date,message_body,from_address,to_address,cc_address,bcc_address,attachment,frequency,time,is_reminder,is_payment_reminder,isActive,createdBy) VALUES ?", [values], function (error, rows, fields) {
                 if (!error) {
                     resolve(rows);
                 } else {
