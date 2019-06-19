@@ -29,4 +29,29 @@ TermCondition.prototype.getByCompanyId = function (companyId, type) {
   });
 }
 
+TermCondition.prototype.updateTermCondition = function (text, companyId, type) {
+  const self = this;
+
+  return new Promise(function (resolve, reject) {
+    connection.getConnection(function (error, connection) {
+      if (error) {
+        throw error;
+      }
+
+      connection.query('update term_condition set text = ? where company_id=? and type = ?', [text, companyId, type], function (error, rows, fields) {
+
+        if (!error) {
+          resolve(rows);
+        } else {
+          console.log("Error...", error);
+          reject(error);
+        }
+
+        connection.release();
+        console.log('Process Complete %d', connection.threadId);
+      });
+    });
+  });
+}
+
 module.exports = TermCondition;

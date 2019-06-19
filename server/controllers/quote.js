@@ -109,7 +109,6 @@ const getQuoteDetail = function (req, res, next) {
 }
 
 const getQuoteDetailsFun = function (res, data) {
-	console.log("**************", data);
 	new Quote({}).getQuoteDetail(data.id, data.quoteId).then(function (quoteList) {
 		new UserActivity({}).getUserActivityId(data.id, data.quoteId).then(function (userActivityId) {
 			new ActviityTaskHist({}).getByActivityId(userActivityId).then(function (tasks) {
@@ -284,8 +283,6 @@ const getDispatchSummary = function (req, res, next) {
 const sendPaymentReminder = function (req, res, next) {
 	try {
 		const body = req.body;
-
-		console.log("body*************", body);
 
 		const taskParams = {
 			createdBy: req.decoded.id,

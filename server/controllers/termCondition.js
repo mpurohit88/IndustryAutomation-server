@@ -7,4 +7,12 @@ const getTermCondition = function (req, res, next) {
   });
 };
 
-module.exports = { getTermCondition: getTermCondition };
+const updateTermCondition = function (req, res, next) {
+  const type = req.decoded.email.indexOf('export') > -1 ? parseInt(req.body.type) + 1 : req.body.type;
+
+  new TermCondition({}).updateTermCondition(req.body.text, req.decoded.companyId, type).then(function (text) {
+    res.status(200).send({ TermCondition: text[0] });
+  });
+}
+
+module.exports = { getTermCondition: getTermCondition, updateTermCondition: updateTermCondition };

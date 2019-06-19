@@ -58,7 +58,6 @@ const getScheduleDetails = function (req, res, next) {
 
 const done = function (req, res, next) {
     let status = req.body.status || 5;
-
     new Schedule({}).stop(req.body.scheduleId).then(function (result) {
         new ActviityTaskHist().complete(req.body.taskId).then(() => {
             new Quote({}).update(req.body.quoteId, status).then(() => {
