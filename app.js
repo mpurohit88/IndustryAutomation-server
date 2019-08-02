@@ -23,6 +23,7 @@ const emailLogRouter = require('./server/routes/emailLog');
 const currencyTypeRouter = require('./server/routes/currencyType');
 const reminderRouter = require('./server/routes/reminder');
 const termConditionRouter = require('./server/routes/termCondition');
+const marketingRouter = require('./server/routes/marketing');
 const authRouter = require('./server/routes/auth');
 
 app.use(bodyParser.json());
@@ -51,6 +52,7 @@ app.use('/api/currencyType', currencyTypeRouter);
 app.use('/api/emailLog', emailLogRouter);
 app.use('/api/reminder', reminderRouter);
 app.use('/api/termCondition', termConditionRouter);
+app.use('/api/marketing', marketingRouter);
 app.use('/api/auth', authRouter);
 
 app.get('/', function (req, res) {

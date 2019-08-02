@@ -699,6 +699,42 @@ h6 {
 }
 /* PUT SASS VARIABLES HERE */
 
+.quote {
+  width: 100%;
+  text-align: center;
+}
+
+.header {
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 20px;
+}
+
+.child > table tr td {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.child > table tr th {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 924px;
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 924px;
+    margin: 1.75rem auto;
+  }
+}
+/* PUT SASS VARIABLES HERE */
+
 .tm4Wl1WVh-PX6IcRT5o_q {
   background-color: white;
   padding: 14px;
@@ -1241,42 +1277,6 @@ a:hover {
   z-index: 100;
   right: 60px;
   top: 93px;
-}
-/* PUT SASS VARIABLES HERE */
-
-.quote {
-  width: 100%;
-  text-align: center;
-}
-
-.header {
-  font-weight: bold;
-  text-decoration: underline;
-  font-size: 20px;
-}
-
-.child > table tr td {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-.child > table tr th {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-@media (min-width: 992px) {
-  .modal-lg,
-  .modal-xl {
-    max-width: 924px;
-  }
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 924px;
-    margin: 1.75rem auto;
-  }
 }
 /* PUT SASS VARIABLES HERE */
 
