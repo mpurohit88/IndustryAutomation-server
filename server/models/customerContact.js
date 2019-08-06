@@ -15,17 +15,24 @@ CustomerContact.prototype.add = function (customer, contactList) {
 				contactValues.push([customer.id, data.name, data.designation, data.department, data.email, data.mobileNo, 1])
 			});
 
-			connection.query("INSERT INTO `customer_contact`(`customerId`, `name`, `designation`, `department`, `email`, `mobileNo`, `isActive`) VALUES ?", [contactValues], function (error, rows, fields) {
-				if (!error) {
-					resolve(rows);
-				} else {
-					console.log("Error...", error);
-					reject(error);
-				}
+			if (contactList.length > 0) {
+				connection.query("INSERT INTO `customer_contact`(`customerId`, `name`, `designation`, `department`, `email`, `mobileNo`, `isActive`) VALUES ?", [contactValues], function (error, rows, fields) {
+					if (!error) {
+						resolve(rows);
+					} else {
+						console.log("Error...", error);
+						reject(error);
+					}
 
+					connection.release();
+					console.log('Process Complete %d', connection.threadId);
+				});
+			} else {
+				resolve([]);
 				connection.release();
 				console.log('Process Complete %d', connection.threadId);
-			});
+			}
+
 		});
 	});
 };
